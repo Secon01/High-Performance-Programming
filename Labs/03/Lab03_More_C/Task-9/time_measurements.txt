@@ -1,0 +1,15 @@
+Question 1:
+0.00s user 0.00s system 0% cpu 4.465 total
+0.01s user 0.00s system 0% cpu 4.394 total
+0.02s user 0.00s system 0% cpu 5.376 total
+0.30s user 0.01s system 4% cpu 6.821 total
+1.04s user 0.05s system 16% cpu 6.650 total
+
+Question 2:
+0.00s user 0.00s system 0% cpu 3.190 total
+0.01s user 0.00s system 0% cpu 24.655 total
+0.02s user 0.00s system 0% cpu 2.287 total
+0.28s user 0.02s system 5% cpu 5.442 total
+1.04s user 0.04s system 20% cpu 5.168 total
+Conclusion: The system time increases in the last two runs.
+
