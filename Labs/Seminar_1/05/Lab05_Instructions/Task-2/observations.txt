@@ -1,0 +1,5 @@
+Reordered boolean conditions to maximize short-circuiting and reduce function calls.
+Replaced bounds check (i < 0 || i >= size) with ((unsigned)i >= (unsigned)size) to remove OR.
+FAST versions perform better, especially without optimizations (-O0).
+At -O2, compiler optimizations reduce but do not eliminate differences.
+Results based on minimum user time over 5 runs.

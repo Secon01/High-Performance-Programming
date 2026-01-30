@@ -1,0 +1,13 @@
+Baseline (np): 0.23 s
++ restrict: 0.24 s → no improvement
+Global NP = 2 (not const): 0.24 s → no improvement
+Global const int NP = 2: 0.15 s → ~35% faster
+Local NP = 2: 0.16 s → same as const
+Local const NP = 2: 0.16 s → no further gain
+
+Baseline (np): 0.23 s
++ restrict: 0.24 s → no improvement
+Global NP = 2 (not const): 0.24 s → no improvement
+Global const int NP = 2: 0.15 s → ~35% faster
+Local NP = 2: 0.16 s → same as const
+Local const NP = 2: 0.16 s → no further gain

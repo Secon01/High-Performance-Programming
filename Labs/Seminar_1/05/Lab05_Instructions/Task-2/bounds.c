@@ -17,7 +17,7 @@ int main(int argc, char **argv)
     {
        i = foo(j,size);
 #if FAST
-       if (0 /*put faster array bounds checking here*/) 
+       if ((unsigned)i >= (unsigned)size)    // if i is negative converting to unsigned becomes a huge number, so it will still be “>= size” and be caught.
        {
           printf("Error: Index out of range");
        }

@@ -1,0 +1,12 @@
+regularcode:
+    Observation: user ≈ real, sys negligible.
+    Explanation: The program is CPU-bound and single-threaded, so most time is spent executing user-level code.
+mallocycode:
+    Observation: sys time is significant.
+    Explanation: Frequent dynamic memory allocations involve system-level operations.
+sleepycode:
+    Observation: real ≫ user.
+    Explanation: sleep() increases wall-clock time without using CPU resources.
+threadedcode:
+    Observation: user > real.
+    Explanation: CPU time is accumulated across multiple threads executing in parallel.

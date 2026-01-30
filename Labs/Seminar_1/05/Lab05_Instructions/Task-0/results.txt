@@ -1,0 +1,288 @@
+=============================
+ regularcode: O0 / O2 / O3
+=============================
+rm -f regularcode mallocycode sleepycode threadedcode
+gcc -Wall -Wextra -std=c11 -O0 regularcode.c -o regularcode
+
+real	0m0.686s
+user	0m0.418s
+sys	0m0.004s
+
+real	0m0.413s
+user	0m0.411s
+sys	0m0.002s
+
+real	0m0.406s
+user	0m0.404s
+sys	0m0.001s
+
+real	0m0.411s
+user	0m0.409s
+sys	0m0.001s
+
+real	0m0.407s
+user	0m0.405s
+sys	0m0.001s
+rm -f regularcode mallocycode sleepycode threadedcode
+gcc -Wall -Wextra -std=c11 -O2 regularcode.c -o regularcode
+
+real	0m0.735s
+user	0m0.433s
+sys	0m0.005s
+
+real	0m0.391s
+user	0m0.389s
+sys	0m0.002s
+
+real	0m0.401s
+user	0m0.399s
+sys	0m0.001s
+
+real	0m0.389s
+user	0m0.387s
+sys	0m0.002s
+
+real	0m0.401s
+user	0m0.398s
+sys	0m0.002s
+rm -f regularcode mallocycode sleepycode threadedcode
+gcc -Wall -Wextra -std=c11 -O3 regularcode.c -o regularcode
+
+real	0m0.538s
+user	0m0.421s
+sys	0m0.002s
+
+real	0m0.395s
+user	0m0.392s
+sys	0m0.003s
+
+real	0m0.400s
+user	0m0.398s
+sys	0m0.001s
+
+real	0m0.399s
+user	0m0.397s
+sys	0m0.002s
+
+real	0m0.393s
+user	0m0.391s
+sys	0m0.001s
+=============================
+ mallocycode: O0 / O2 / O3
+=============================
+rm -f regularcode mallocycode sleepycode threadedcode
+gcc -Wall -Wextra -std=c11 -O0 mallocycode.c -o mallocycode
+
+real	0m0.971s
+user	0m0.702s
+sys	0m0.057s
+
+real	0m0.749s
+user	0m0.692s
+sys	0m0.052s
+
+real	0m0.766s
+user	0m0.709s
+sys	0m0.054s
+
+real	0m0.741s
+user	0m0.686s
+sys	0m0.054s
+
+real	0m0.752s
+user	0m0.699s
+sys	0m0.052s
+rm -f regularcode mallocycode sleepycode threadedcode
+gcc -Wall -Wextra -std=c11 -O2 mallocycode.c -o mallocycode
+
+real	0m0.982s
+user	0m0.667s
+sys	0m0.070s
+
+real	0m0.732s
+user	0m0.666s
+sys	0m0.063s
+
+real	0m0.728s
+user	0m0.656s
+sys	0m0.070s
+
+real	0m0.771s
+user	0m0.689s
+sys	0m0.080s
+
+real	0m0.774s
+user	0m0.683s
+sys	0m0.083s
+rm -f regularcode mallocycode sleepycode threadedcode
+gcc -Wall -Wextra -std=c11 -O3 mallocycode.c -o mallocycode
+
+real	0m0.881s
+user	0m0.682s
+sys	0m0.072s
+
+real	0m0.743s
+user	0m0.667s
+sys	0m0.070s
+
+real	0m0.726s
+user	0m0.654s
+sys	0m0.067s
+
+real	0m0.720s
+user	0m0.654s
+sys	0m0.058s
+
+real	0m0.720s
+user	0m0.659s
+sys	0m0.052s
+=============================
+ sleepycode: O0 / O2 / O3
+=============================
+rm -f regularcode mallocycode sleepycode threadedcode
+gcc -Wall -Wextra -std=c11 -O0 sleepycode.c -o sleepycode
+
+real	0m5.750s
+user	0m0.506s
+sys	0m0.004s
+
+real	0m5.557s
+user	0m0.528s
+sys	0m0.004s
+
+real	0m5.541s
+user	0m0.518s
+sys	0m0.004s
+
+real	0m5.543s
+user	0m0.515s
+sys	0m0.007s
+
+real	0m5.550s
+user	0m0.528s
+sys	0m0.004s
+rm -f regularcode mallocycode sleepycode threadedcode
+gcc -Wall -Wextra -std=c11 -O2 sleepycode.c -o sleepycode
+
+real	0m5.973s
+user	0m0.548s
+sys	0m0.004s
+
+real	0m5.553s
+user	0m0.529s
+sys	0m0.004s
+
+real	0m5.534s
+user	0m0.521s
+sys	0m0.004s
+
+real	0m5.563s
+user	0m0.543s
+sys	0m0.003s
+
+real	0m5.541s
+user	0m0.521s
+sys	0m0.004s
+rm -f regularcode mallocycode sleepycode threadedcode
+gcc -Wall -Wextra -std=c11 -O3 sleepycode.c -o sleepycode
+
+real	0m5.645s
+user	0m0.514s
+sys	0m0.003s
+
+real	0m5.549s
+user	0m0.524s
+sys	0m0.004s
+
+real	0m5.569s
+user	0m0.546s
+sys	0m0.004s
+
+real	0m5.565s
+user	0m0.544s
+sys	0m0.004s
+
+real	0m5.541s
+user	0m0.522s
+sys	0m0.004s
+=============================
+ threadedcode: O0 / O2 / O3
+=============================
+rm -f regularcode mallocycode sleepycode threadedcode
+gcc -Wall -Wextra -std=c11 -O0 threadedcode.c -o threadedcode -pthread
+threadedcode.c:6:29: warning: unused parameter 'arg' [-Wunused-parameter]
+    6 | void* the_thread_func(void* arg) {
+      |                             ^
+1 warning generated.
+
+real	0m0.765s
+user	0m0.865s
+sys	0m0.005s
+
+real	0m0.416s
+user	0m0.826s
+sys	0m0.002s
+
+real	0m0.421s
+user	0m0.837s
+sys	0m0.002s
+
+real	0m0.417s
+user	0m0.829s
+sys	0m0.002s
+
+real	0m0.420s
+user	0m0.835s
+sys	0m0.002s
+rm -f regularcode mallocycode sleepycode threadedcode
+gcc -Wall -Wextra -std=c11 -O2 threadedcode.c -o threadedcode -pthread
+threadedcode.c:6:29: warning: unused parameter 'arg' [-Wunused-parameter]
+    6 | void* the_thread_func(void* arg) {
+      |                             ^
+1 warning generated.
+
+real	0m0.697s
+user	0m0.829s
+sys	0m0.005s
+
+real	0m0.419s
+user	0m0.832s
+sys	0m0.003s
+
+real	0m0.399s
+user	0m0.794s
+sys	0m0.002s
+
+real	0m0.416s
+user	0m0.825s
+sys	0m0.002s
+
+real	0m0.408s
+user	0m0.811s
+sys	0m0.002s
+rm -f regularcode mallocycode sleepycode threadedcode
+gcc -Wall -Wextra -std=c11 -O3 threadedcode.c -o threadedcode -pthread
+threadedcode.c:6:29: warning: unused parameter 'arg' [-Wunused-parameter]
+    6 | void* the_thread_func(void* arg) {
+      |                             ^
+1 warning generated.
+
+real	0m0.613s
+user	0m0.856s
+sys	0m0.004s
+
+real	0m0.409s
+user	0m0.813s
+sys	0m0.003s
+
+real	0m0.417s
+user	0m0.827s
+sys	0m0.002s
+
+real	0m0.398s
+user	0m0.792s
+sys	0m0.002s
+
+real	0m0.415s
+user	0m0.826s
+sys	0m0.002s

@@ -1,0 +1,6 @@
+bubble vs merge timings (few N)
+merge leak version slower / gets worse with larger N (allocator/cache pressure)
+single malloc improves over baseline (fewer malloc/free)
+stack version: faster but fails after some N (stack limit from ulimit)
+cutoff optimization: best cutoff found, small speedup
+extra: work buffer once is fastest (no repeated allocations)

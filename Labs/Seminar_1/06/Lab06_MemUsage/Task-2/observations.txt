@@ -1,0 +1,2 @@
+The experiments show that merge sort performance is largely independent of the element datatype, with all tested types exhibiting nearly identical execution times.
+The lack of observable differences indicates that merge sort performance is dominated by memory access and recursion overhead rather than the element datatype.

@@ -1,0 +1,6 @@
+for i in {1..5}; do echo "Run $i"; { /usr/bin/time -p ./PROGRAM >/dev/null; } 2>&1; echo; done
+
+norms.c (normal floating-point values) consistently runs faster than denorms.c (denormal values).
+Denormal numbers introduce a noticeable performance penalty at -O2 and -O3.
+With -Ofast, the performance gap is reduced or disappears due to relaxed IEEE floating-point rules (e.g. flushing denormals to zero).
+Results were evaluated using the minimum user time over 5 runs.

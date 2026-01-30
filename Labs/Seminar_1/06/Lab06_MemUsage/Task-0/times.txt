@@ -1,0 +1,59 @@
+n=200 m=500000 Step8
+real 0.43
+user 0.17
+sys 0.00
+
+n=200 m=500000 Low
+real 0.23
+user 0.07
+sys 0.00
+
+n=100 m=1000000 Step8
+real 0.30
+user 0.15
+sys 0.00
+
+n=100 m=1000000 Low
+real 0.10
+user 0.10
+sys 0.00
+
+n=50 m=2000000 Step8
+real 0.35
+user 0.17
+sys 0.00
+
+n=50 m=2000000 Low
+real 0.20
+user 0.08
+sys 0.00
+
+n=30 m=3333333 Step8
+real 0.28
+user 0.15
+sys 0.00
+
+n=30 m=3333333 Low
+real 0.30
+user 0.09
+sys 0.00
+
+n=20 m=5000000 Step8
+real 0.32
+user 0.17
+sys 0.00
+
+n=20 m=5000000 Low
+real 0.39
+user 0.09
+sys 0.00
+
+n=10 m=10000000 Step8
+real 0.28
+user 0.16
+sys 0.00
+
+n=10 m=10000000 Low
+real 0.19
+user 0.08
+sys 0.00

@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define FAST 0
-
 #if FAST
 int digits2int(int* z, int N)
 {

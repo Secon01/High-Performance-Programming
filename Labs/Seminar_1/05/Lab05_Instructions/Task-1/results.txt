@@ -1,0 +1,129 @@
+========== Loop Invariants ==========
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O0 -DFAST=0 loop_invariants.c -o loop_invariants
+time ./loop_invariants > /dev/null
+
+real	0m0.672s
+user	0m0.354s
+sys	0m0.056s
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O2 -DFAST=0 loop_invariants.c -o loop_invariants
+time ./loop_invariants > /dev/null
+
+real	0m0.499s
+user	0m0.088s
+sys	0m0.050s
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O3 -DFAST=0 loop_invariants.c -o loop_invariants
+time ./loop_invariants > /dev/null
+
+real	0m0.368s
+user	0m0.091s
+sys	0m0.050s
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O0 -DFAST=1 loop_invariants.c -o loop_invariants
+time ./loop_invariants > /dev/null
+
+real	0m0.787s
+user	0m0.343s
+sys	0m0.047s
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O2 -DFAST=1 loop_invariants.c -o loop_invariants
+time ./loop_invariants > /dev/null
+
+real	0m0.368s
+user	0m0.091s
+sys	0m0.049s
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O3 -DFAST=1 loop_invariants.c -o loop_invariants
+time ./loop_invariants > /dev/null
+
+real	0m0.273s
+user	0m0.091s
+sys	0m0.047s
+========== String Loop ==========
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O0 -DFAST=0 string_loop.c -o string_loop
+time ./string_loop > /dev/null
+
+real	0m0.825s
+user	0m0.492s
+sys	0m0.003s
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O2 -DFAST=0 string_loop.c -o string_loop
+time ./string_loop > /dev/null
+
+real	0m0.558s
+user	0m0.333s
+sys	0m0.003s
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O3 -DFAST=0 string_loop.c -o string_loop
+time ./string_loop > /dev/null
+
+real	0m0.431s
+user	0m0.311s
+sys	0m0.001s
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O0 -DFAST=1 string_loop.c -o string_loop
+time ./string_loop > /dev/null
+
+real	0m0.806s
+user	0m0.575s
+sys	0m0.003s
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O2 -DFAST=1 string_loop.c -o string_loop
+time ./string_loop > /dev/null
+
+real	0m0.253s
+user	0m0.006s
+sys	0m0.003s
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O3 -DFAST=1 string_loop.c -o string_loop
+time ./string_loop > /dev/null
+
+real	0m0.085s
+user	0m0.004s
+sys	0m0.001s
+========== Array Loop ==========
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O0 -DFAST=0 array_loop.c -o array_loop
+time ./array_loop > /dev/null
+
+real	0m0.772s
+user	0m0.455s
+sys	0m0.002s
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O2 -DFAST=0 array_loop.c -o array_loop
+time ./array_loop > /dev/null
+
+real	0m0.224s
+user	0m0.002s
+sys	0m0.003s
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O3 -DFAST=0 array_loop.c -o array_loop
+time ./array_loop > /dev/null
+
+real	0m0.099s
+user	0m0.001s
+sys	0m0.001s
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O0 -DFAST=1 array_loop.c -o array_loop
+time ./array_loop > /dev/null
+
+real	0m0.614s
+user	0m0.414s
+sys	0m0.003s
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O2 -DFAST=1 array_loop.c -o array_loop
+time ./array_loop > /dev/null
+
+real	0m0.364s
+user	0m0.002s
+sys	0m0.002s
+rm -f loop_invariants string_loop array_loop
+gcc -Wall -std=c11 -O3 -DFAST=1 array_loop.c -o array_loop
+time ./array_loop > /dev/null
+
+real	0m0.089s
+user	0m0.001s
+sys	0m0.001s

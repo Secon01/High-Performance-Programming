@@ -1,0 +1,18 @@
+for i in {1..5}; do echo "Run $i"; { /usr/bin/time -p ./PROGRAM >/dev/null; } 2>&1; echo; done >> task4_results.txt
+
+memset.c
+    Using memset/memmove is faster than manual loops, as library routines are highly optimized.
+    The measured results match the expectation.
+lookup.c
+    Lookup tables outperform repeated computation when the input domain is small and values are reused.
+    The lookup version was consistently faster, as expected.
+strength_reduction.c
+    Replacing expensive operations (division, multiplication by constants, floating-point division) with shifts, additions, and precomputed constants significantly reduced execution time.
+    The optimized version produced identical results and ran faster.
+math_functions.c
+    Replacing pow() with sqrt() and sqrtf() improved performance.
+    sqrtf() was fastest due to lower precision and simpler implementation.
+timings.c
+    Demonstrates how to measure execution time using time.h and shows that execution time increases with workload size.
+Measurement method
+    Each version was executed 5 times and the minimum user time was used for comparison.

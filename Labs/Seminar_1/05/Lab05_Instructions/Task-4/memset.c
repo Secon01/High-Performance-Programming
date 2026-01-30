@@ -4,7 +4,7 @@
 
 /* From A. Fog: Example 7.33. */
 
-#define FAST 0
+#define FAST 1
 
 int main(int argc, char** argv)
 {

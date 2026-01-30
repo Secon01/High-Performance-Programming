@@ -1,0 +1,79 @@
+bubble_sort N=2000
+real 0.01
+user 0.00
+sys 0.00
+
+bubble_sort N=5000
+real 0.02
+user 0.02
+sys 0.00
+
+bubble_sort N=10000
+real 0.05
+user 0.04
+sys 0.00
+
+merge_sort baseline N=2000
+real 0.39
+user 0.00
+sys 0.00
+
+merge_sort baseline N=10000
+real 0.00
+user 0.00
+sys 0.00
+
+merge_sort LEAK N=20000
+real 0.41
+user 0.00
+sys 0.00
+
+merge_sort LEAK N=50000
+real 0.00
+user 0.00
+sys 0.00
+
+merge_sort single-malloc N=50000
+real 0.28
+user 0.00
+sys 0.00
+
+merge_sort single-malloc N=100000
+real 0.01
+user 0.00
+sys 0.00
+
+merge_sort stack N=20000
+real 0.27
+user 0.00
+sys 0.00
+
+merge_sort stack N=50000
+real 0.00
+user 0.00
+sys 0.00
+
+merge_sort cutoff=8 N=100000
+real 0.38
+user 0.00
+sys 0.00
+
+merge_sort cutoff=16 N=100000
+real 0.24
+user 0.01
+sys 0.00
+
+merge_sort cutoff=32 N=100000
+real 0.32
+user 0.01
+sys 0.00
+
+merge_sort cutoff=64 N=100000
+real 0.24
+user 0.01
+sys 0.00
+
+merge_sort cutoff=128 N=100000
+real 0.33
+user 0.02
+sys 0.00

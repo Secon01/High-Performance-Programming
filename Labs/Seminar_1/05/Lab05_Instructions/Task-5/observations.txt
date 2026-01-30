@@ -1,0 +1,5 @@
+A real function call introduces overhead due to jumps, stack frame setup, and register saving/restoring.
+Using inline allows the compiler to replace the function call with the function body, eliminating this overhead.
+With -O2, the non-inlined version ran in 0.13 s, while the inlined version ran in 0.05 s (minimum user time).
+With -O3, the non-inlined version again ran in 0.13 s, while the inlined version improved further to 0.04 s.
+The results confirm that function inlining significantly improves performance in tight loops, and higher optimization levels amplify this effect.

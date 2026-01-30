@@ -1,0 +1,2 @@
+The version with restrict shows a lower average user time compared to the version without restrict.
+Using restrict reduces the average user execution time by enabling better compiler optimizations, especially for small loop sizes.

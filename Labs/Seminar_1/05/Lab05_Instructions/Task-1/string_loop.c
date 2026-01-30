@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define FAST 0
-
 /* From A. Fog Example 7.31. */
 
 #if FAST

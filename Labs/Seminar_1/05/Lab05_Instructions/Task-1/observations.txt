@@ -1,0 +1,14 @@
+Expectation
+    FAST version should be faster because loop-invariant work is moved out of the inner loop.
+    Compiler optimizations should further reduce execution time.
+Measured results
+    -O0: FAST version clearly faster than SLOW.
+    -O2 / -O3: Execution time drops significantly for both versions.
+    FAST often remains slightly faster, but the gap is much smaller.
+Interpretation
+    Manual loop-invariant removal reduces repeated operations.
+    With optimizations enabled, the compiler performs similar transformations automatically.
+Conclusion
+    Results match expectations.
+    Compiler optimizations dominate performance at -O2/-O3.
+    Manual “FAST” optimizations matter most when compiler optimizations are disabled or limited.

@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define FAST 0
-
 int main(int argc, char **argv)
 {
   int N = 10000, i, j;
