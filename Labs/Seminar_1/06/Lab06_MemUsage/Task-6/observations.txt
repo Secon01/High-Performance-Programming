@@ -1,0 +1,5 @@
+Result sum is identical in all versions → correctness preserved.
+Baseline: f(i) in inner loop → 400M calls, ~1.0 s.
+Manual hoisting: f(i) moved outside → 20k calls, ~0.33 s (~3× faster).
+__attribute__((const)): compiler hoists automatically → 20k calls, ~0.29 s (fastest).
+Speedup is due to eliminating redundant function calls by exploiting function purity.

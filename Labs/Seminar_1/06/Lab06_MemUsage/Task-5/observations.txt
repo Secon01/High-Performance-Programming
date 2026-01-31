@@ -1,0 +1,17 @@
+Why 4096: lets you test blockSz = 8,16,32,64,128,256 without triggering
+            Error: N not divisible by blockSz.
+
+Average user time per block size:
+    blockSz=8: 1.015 s
+    blockSz=16: 0.995 s
+    blockSz=32: 0.993 s
+    blockSz=64: 0.993 s
+    blockSz=128: 0.957 s (best)
+    blockSz=256: 0.983 s
+Comparisons:
+    Best (128) vs worst (8): 0.957 s vs 1.015 s → ~5.7% faster
+    128 is also faster than 32/64: 0.957 s vs 0.993 s → ~3.6% faster
+    Very small blocks (8) are slower (more loop/block overhead), very large blocks (256) lose some cache benefit.
+
+Yes, blocking helps (best block size gives the lowest average user time).
+Optimal block size on your machine: blockSz = 128 (lowest avg user time 0.957 s).

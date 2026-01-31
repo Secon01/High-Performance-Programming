@@ -14,11 +14,14 @@ static double get_wall_seconds() {
 
 int main (int argc, char**args) {
   double time1;
-  const int N = 3000;
+  //const int N = 3000;
+  //const int N = 4096;
+  enum { N = 4096 };
   const int nJobs = 1;
 
   double* A     = (double*)malloc(N*N*sizeof(double));
-  const int nB = 5;
+  //const int nB = 5;
+  enum { nB = 5 };
   double* B_std[nB];
   double* B_opt[nB];
   int i, j;

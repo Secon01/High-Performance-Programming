@@ -6,8 +6,10 @@ int main() {
   int i, j;
   int sum = 0;
   for(i = 0; i < n; i++) {
+    //int fi = f(i);              // hoist
     for(j = 0; j < n; j++) {
       sum += f(i) + 3*j;
+      //sum += fi + 3*j;      // using hoist
     }
   }
   printf("Result sum: %d\n", sum);

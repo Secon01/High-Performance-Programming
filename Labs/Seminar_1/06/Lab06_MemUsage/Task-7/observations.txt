@@ -1,0 +1,11 @@
+Version kij, time = 0.019617
+Version ijk, time = 0.084971
+Version jik, time = 0.077482
+Version ikj, time = 0.008188
+Version jki, time = 0.377117
+Version kji, time = 0.38293
+
+Best order: ikj (0.0082s)
+Next: kij (0.0196s) (~2.4× slower than ikj)
+Worst: jki/kji (~0.38s) (~46× slower than ikj)
+Reason: inner-loop access to B[k][j] is contiguous for ikj/kij, but cache-hostile for the slow ones.

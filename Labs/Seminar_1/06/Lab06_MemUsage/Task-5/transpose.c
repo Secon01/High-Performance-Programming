@@ -9,7 +9,9 @@ void do_transpose_standard (double* B, const double* A, int N) {
 }
 
 void do_transpose_optimized(double* B, const double* A, int N) {
-  const int blockSz = 100;
+  //const int blockSz = 100;
+  enum { blockSz = 8 };
+  //const int blockSz = 32;
   double subMat[blockSz*blockSz];
   if(N % blockSz != 0) {
     printf("Error: N not divisible by blockSz.\n");

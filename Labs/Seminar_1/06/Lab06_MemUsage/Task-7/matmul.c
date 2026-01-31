@@ -75,6 +75,46 @@ void mul_jik(int n, int **a, int **b, int **c)
   }
 }
 
+// Add ikj, jki, kji
+void mul_ikj(int n, int **a, int **b, int **c)
+{
+  for (int i=0;i<n;i++) {
+    for (int k=0;k<n;k++) {
+      int x = a[i][k];
+      for (int j=0;j<n;j++)
+        c[i][j] += x * b[k][j];
+    }
+  }
+}
+
+void mul_jki(int n, int **a, int **b, int **c)
+{
+  for (int j=0;j<n;j++) {
+    for (int k=0;k<n;k++) {
+      int x = b[k][j];
+      for (int i=0;i<n;i++)
+        c[i][j] += a[i][k] * x;
+    }
+  }
+}
+
+void mul_kji(int n, int **a, int **b, int **c)
+{
+  for (int k=0;k<n;k++) {
+    for (int j=0;j<n;j++) {
+      int x = b[k][j];
+      for (int i=0;i<n;i++)
+        c[i][j] += a[i][k] * x;
+    }
+  }
+}
+
+  void zero_mat(int **c, int n) 
+  {
+    for (int i=0;i<n;i++)
+      for (int j=0;j<n;j++)
+        c[i][j]=0;
+  }
 int main()
 {
   int i, j, n;
@@ -104,18 +144,49 @@ int main()
 
   allocate_mem(&c, n);
 
+  zero_mat(c, n);
   time=get_wall_seconds();
   mul_kij(n, a, b, c);
   time=get_wall_seconds()-time;
   printf("Version kij, time = %f\n",time);
+
+  zero_mat(c, n);
   time=get_wall_seconds();
   mul_ijk(n, a, b, c);
   time=get_wall_seconds()-time;
   printf("Version ijk, time = %f\n",time);
+
+  zero_mat(c, n);
   time=get_wall_seconds();
   mul_jik(n, a, b, c);
   time=get_wall_seconds()-time;
   printf("Version jik, time = %f\n",time);
+
+  /* ikj */
+  zero_mat(c, n);
+  time = get_wall_seconds();
+  mul_ikj(n, a, b, c);
+  time = get_wall_seconds() - time;
+  printf("ikj   : %f\n", time);
+
+  /* jki */
+  zero_mat(c, n);
+  time = get_wall_seconds();
+  mul_jki(n, a, b, c);
+  time = get_wall_seconds() - time;
+  printf("jki   : %f\n", time);
+
+  /* kji */
+  zero_mat(c, n);
+  time = get_wall_seconds();
+  mul_kji(n, a, b, c);
+  time = get_wall_seconds() - time;
+  printf("kji   : %f\n", time);
+
+  free_mem(a, n);
+  free_mem(b, n);
+  free_mem(c, n);
+
 
   /*
     printf("Product of entered matrices:\n");
@@ -132,6 +203,5 @@ int main()
   free_mem(a, n);
   free_mem(b, n);
   free_mem(c, n);
-
   return 0;
 }
