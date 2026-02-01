@@ -2,7 +2,7 @@
 
 typedef struct {
   double x;
-  //  double v[5];
+  double v[5];
 } GridPt;
 
 void apply_stencil_v1(const GridPt* grid_src, GridPt* grid_dst, int N);

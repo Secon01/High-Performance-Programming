@@ -1,0 +1,8 @@
+===== Task 6 | final run (vectorized) =====
+Ref: time = 0.173104
+Auto-vec: time = 0.158354
+e_sum: 0.000000
+OK
+real 0.83
+user 0.69
+sys 0.12

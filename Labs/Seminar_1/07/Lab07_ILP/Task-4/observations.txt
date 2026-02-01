@@ -1,0 +1,9 @@
+Optimization:
+    Kept the first 4 iterations unchanged, removed all branches from the hot loop.
+Correctness:
+    abs_diff = 0 → correct.
+Performance:
+    f_std ≈ 0.40 s, f_opt ≈ 0.10 s
+    Speedup: ~4×
+Conclusion:
+    Eliminating branches from the inner loop significantly improves performance by reducing branch overhead and enabling better pipelining

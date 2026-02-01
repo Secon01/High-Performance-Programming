@@ -17,9 +17,14 @@ void matvec_autovec(double **mat_a,double *vec_b, double *vec_c,int SIZE)
 {
     int i, j;
 
-    for (i = 0; i < SIZE; i++)
-                for (j = 0; j < SIZE; j++)
-                        vec_c[i] += mat_a[i][j] * vec_b[j];
+    for (i = 0; i < SIZE; i++){
+      double sum = 0.0;
+      for (j = 0; j < SIZE; j++){
+        //vec_c[i] += mat_a[i][j] * vec_b[j];
+        sum+=mat_a[i][j] * vec_b[j];
+      }
+      vec_c[i] = sum;
+    }
 }
 
 /* Don't change this */

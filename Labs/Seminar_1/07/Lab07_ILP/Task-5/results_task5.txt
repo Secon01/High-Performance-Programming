@@ -1,0 +1,25 @@
+===== Task 5 | Run A: baseline (a in [0,1)) =====
+/bin/rm -f branch_test main.o testfuncs.o
+gcc -O3 -Wall -funroll-loops -c main.c 
+gcc -O3 -Wall -funroll-loops -c testfuncs.c
+gcc  main.o testfuncs.o -o branch_test
+f_std tests took   0.392 wall seconds.
+f_opt tests took   0.401 wall seconds.
+Checking correctness: abs_diff =        0
+OK, result seems correct.
+real 1.92
+user 1.59
+sys 0.00
+
+===== Task 5 | Run B: predictable (a in [0,0.5)) =====
+/bin/rm -f branch_test main.o testfuncs.o
+gcc -O3 -Wall -funroll-loops -c main.c 
+gcc -O3 -Wall -funroll-loops -c testfuncs.c
+gcc  main.o testfuncs.o -o branch_test
+f_std tests took   0.391 wall seconds.
+f_opt tests took   0.405 wall seconds.
+Checking correctness: abs_diff =        0
+OK, result seems correct.
+real 1.95
+user 1.60
+sys 0.00

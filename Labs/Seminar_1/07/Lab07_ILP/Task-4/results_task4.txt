@@ -1,0 +1,39 @@
+===== Task 4 | -O2 =====
+/bin/rm -f branch_test main.o testfuncs.o
+gcc -O3 -Wall -funroll-loops -c main.c 
+gcc -O3 -Wall -funroll-loops -c testfuncs.c
+gcc  main.o testfuncs.o -o branch_test
+f_std tests took   0.415 wall seconds.
+f_opt tests took   0.100 wall seconds.
+Checking correctness: abs_diff =        0
+OK, result seems correct.
+real 1.11
+user 1.00
+sys 0.00
+
+
+===== Task 4 | -O3 =====
+/bin/rm -f branch_test main.o testfuncs.o
+gcc -O3 -Wall -Werror -c main.c 
+gcc -O3 -Wall -Werror -c testfuncs.c
+gcc  main.o testfuncs.o -o branch_test
+f_std tests took   0.402 wall seconds.
+f_opt tests took   0.108 wall seconds.
+Checking correctness: abs_diff =        0
+OK, result seems correct.
+real 1.16
+user 1.02
+sys 0.00
+
+===== Task 4 | -O3 -funroll-loops =====
+/bin/rm -f branch_test main.o testfuncs.o
+gcc -O3 -funroll-loops -Wall -Werror -c main.c 
+gcc -O3 -funroll-loops -Wall -Werror -c testfuncs.c
+gcc  main.o testfuncs.o -o branch_test
+f_std tests took   0.409 wall seconds.
+f_opt tests took   0.100 wall seconds.
+Checking correctness: abs_diff =        0
+OK, result seems correct.
+real 1.27
+user 1.03
+sys 0.01

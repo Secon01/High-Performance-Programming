@@ -1,0 +1,13 @@
+Optimization:
+    Manually unrolled the loop by 4 and removed the conditional by making the update of x explicit.
+    f_std used as baseline.
+Correctness:
+    max_abs_diff = 0 → results are identical.
+Performance:
+    f_std: 0.087 s
+    f_opt: 0.186 s
+    f_opt is ~2.1× slower than f_std.
+Compiler unrolling:
+    Automatic/manual loop unrolling does not improve performance here.
+Conclusion:
+    Loop-carried dependencies and increased code complexity outweigh the benefit of reduced control flow, making the optimized version slower.

@@ -1,0 +1,33 @@
+===== Scenario A: STENCIL_SZ=20, small GridPt =====
+Doing 400 iterations with N=200 using apply_stencil function version 1 took   0.013 wall seconds.
+Doing 400 iterations with N=200 using apply_stencil function version 2 took   0.013 wall seconds.
+Doing 400 iterations with N=200 using apply_stencil function version 3 took   0.013 wall seconds.
+Checking correctness by comparing 1 and 2: max_abs_diff = 8.882e-16
+Checking correctness by comparing 1 and 3: max_abs_diff =        0
+OK, results seem correct!
+real 0.38
+user 0.08
+sys 0.00
+
+
+===== Scenario B: STENCIL_SZ=4, small GridPt =====
+Doing 400 iterations with N=200 using apply_stencil function version 1 took   0.014 wall seconds.
+Doing 400 iterations with N=200 using apply_stencil function version 2 took   0.013 wall seconds.
+Doing 400 iterations with N=200 using apply_stencil function version 3 took   0.013 wall seconds.
+Checking correctness by comparing 1 and 2: max_abs_diff = 8.882e-16
+Checking correctness by comparing 1 and 3: max_abs_diff =        0
+OK, results seem correct!
+real 0.34
+user 0.10
+sys 0.00
+
+===== Scenario C: STENCIL_SZ=20, large GridPt (blocked v3) =====
+Doing 400 iterations with N=232 using apply_stencil function version 1 took   0.271 wall seconds.
+Doing 400 iterations with N=232 using apply_stencil function version 2 took   0.284 wall seconds.
+Doing 400 iterations with N=232 using apply_stencil function version 3 took   0.187 wall seconds.
+Checking correctness by comparing 1 and 2: max_abs_diff = 2.442e-15
+Checking correctness by comparing 1 and 3: max_abs_diff = 2.442e-15
+OK, results seem correct!
+real 1.78
+user 1.49
+sys 0.01

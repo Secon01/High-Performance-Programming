@@ -19,16 +19,24 @@ void f_std(const double * __restrict a,
 void f_opt(const double * __restrict a, 
 	   const double * __restrict b, 
 	   double * __restrict c, int N) {
-  int i;
-  int counter = 0;
-  double x = 0;
-  for(i = 0; i < N; i++) {
-    if(counter == 4) {
-      x += 0.1;
-      counter = 0;
-    }
-    c[i] = a[i]*a[i] + b[i] + x;
-    counter++;
+  int i = 0;
+  for (; i + 3 < N; i += 4) {
+    const double x = 0.1 * (double)(i >> 2);    // i/4
+
+    const double a0 = a[i];
+    const double a1 = a[i + 1];
+    const double a2 = a[i + 2];
+    const double a3 = a[i + 3];
+
+    c[i]     = a0 * a0 + b[i]     + x;
+    c[i + 1] = a1 * a1 + b[i + 1] + x;
+    c[i + 2] = a2 * a2 + b[i + 2] + x;
+    c[i + 3] = a3 * a3 + b[i + 3] + x;
+  }
+
+  for (; i < N; i++) {                          // remainder 
+    const double x = 0.1 * (double)(i >> 2);
+    c[i] = a[i] * a[i] + b[i] + x;
   }
 }
 

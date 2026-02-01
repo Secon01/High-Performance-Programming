@@ -1,0 +1,12 @@
+Setup:
+    Baseline: a[i] uniformly in [0,1) → branch conditions unpredictable.
+    Modified: a[i] in [0,0.5) → a[i] > 0.5 and a[i] > 0.6 always false → branches predictable.
+Correctness:
+    Results unchanged.
+Performance (from results_task5.txt):
+    Baseline: slower execution.
+    Predictable input: noticeably faster execution.
+    Speedup: clear improvement (branch mispredictions largely removed).
+Conclusion:
+    When branches are unpredictable, performance degrades due to mispredictions.
+    Making branches highly predictable improves runtime, but does not match the speed of completely removing branches (as in Task 4).

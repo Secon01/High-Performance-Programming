@@ -1,0 +1,6 @@
+Loop unrolling was used to increase instruction-level parallelism (ILP) by reducing loop control overhead.
+Correctness was verified in all cases (max_abs_diff = 0), including a non-divisible case (N1 = 200, unroll factor = 3). 
+task1_results
+Measurements show that manual unrolling does not outperform f_std, as the compiler already applies effective optimizations at -O2/-O3. 
+task1_results
+Unroll factor = 4 was chosen as a balanced choice: it exposes sufficient ILP while avoiding excessive register pressure; larger or irregular factors provide no benefit.

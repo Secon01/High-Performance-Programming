@@ -1,0 +1,10 @@
+Auto-vectorization:
+    The inner loop of matvec_autovec was successfully auto-vectorized after removing the loop-carried dependency on vec_c[i] by using a scalar accumulator.
+Compilation:
+    Compiled with -O3 -march=native, enabling SIMD instructions supported by the CPU.
+Correctness:
+    Results match the reference implementation.
+Performance:
+    The auto-vectorized version runs significantly faster than the reference scalar version due to SIMD execution of the inner loop.
+Conclusion:
+    Writing loops with independent iterations enables the compiler to exploit ILP and SIMD through auto-vectorization, leading to clear performance gains.

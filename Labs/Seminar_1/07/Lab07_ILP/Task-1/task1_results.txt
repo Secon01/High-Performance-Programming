@@ -1,0 +1,23 @@
+=== O2, manual unroll ===
+f_std tests took   0.090 wall seconds.
+f_opt tests took   0.179 wall seconds.
+Checking correctness: max_abs_diff =        0
+OK, result seems correct.
+
+=== O3, manual unroll ===
+f_std tests took   0.086 wall seconds.
+f_opt tests took   0.177 wall seconds.
+Checking correctness: max_abs_diff =        0
+OK, result seems correct.
+
+=== O3 + funroll-loops ===
+f_std tests took   0.088 wall seconds.
+f_opt tests took   0.177 wall seconds.
+Checking correctness: max_abs_diff =        0
+OK, result seems correct.
+
+=== N1=200, unroll=3 ===
+f_std tests took   0.091 wall seconds.
+f_opt tests took   0.187 wall seconds.
+Checking correctness: max_abs_diff =        0
+OK, result seems correct.

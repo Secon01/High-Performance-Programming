@@ -1,0 +1,7 @@
+f_std tests took   0.087 wall seconds.
+f_opt tests took   0.186 wall seconds.
+Checking correctness: max_abs_diff =        0
+OK, result seems correct.
+real 0.90
+user 0.57
+sys 0.00
