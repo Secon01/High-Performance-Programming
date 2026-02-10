@@ -1,0 +1,3 @@
+Question:   Try to run the program with the same number of threads a few times. Which result
+            do you get? Do you get the same result each time?
+Answer:     No I am getting different result each time.

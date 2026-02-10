@@ -1,0 +1,32 @@
+Compilation: gcc -std=c11 -Wall -Wextra -O0 threaded_computation.c -o task3 -lpthread
+------ N1 = 700000000, N2 = 100000000 -------
+Wall time: 0.363968 seconds
+sum computed by main() : 4900000000
+sum computed by thread : 700000000
+totalSum : 5600000000
+
+------ N1 = 600000000, N2 = 200000000 -------
+Wall time: 0.312483 seconds
+sum computed by main() : 4200000000
+sum computed by thread : 1400000000
+totalSum : 5600000000
+
+------ N1 = 500000000, N2 = 300000000 -------
+Wall time: 0.261112 seconds
+sum computed by main() : 3500000000
+sum computed by thread : 2100000000
+totalSum : 5600000000
+
+------ N1 = 400000000, N2 = 400000000 -------
+Wall time: 0.214026 seconds
+sum computed by main() : 2800000000
+sum computed by thread : 2800000000
+totalSum : 5600000000
+
+------ N1 = 300000000, N2 = 500000000 -------
+Wall time: 0.271641 seconds
+sum computed by main() : 2100000000
+sum computed by thread : 3500000000
+totalSum : 5600000000
+
+Answer: We get the minimun runtime when the both threads do approximately the same amount of work.

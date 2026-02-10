@@ -1,0 +1,37 @@
+--- Without the mutex object ---
+This is the main() function starting.
+the main() function now calling pthread_create().
+This is the main() function after pthread_create()
+the main() function now calling pthread_join().
+sum = 113725
+
+This is the main() function starting.
+the main() function now calling pthread_create().
+This is the main() function after pthread_create()
+the main() function now calling pthread_join().
+sum = 207745
+
+This is the main() function starting.
+the main() function now calling pthread_create().
+This is the main() function after pthread_create()
+the main() function now calling pthread_join().
+sum = 111536
+
+--- With the mutex object ---
+This is the main() function starting.
+the main() function now calling pthread_create().
+This is the main() function after pthread_create()
+the main() function now calling pthread_join().
+sum = 300000
+
+This is the main() function starting.
+the main() function now calling pthread_create().
+This is the main() function after pthread_create()
+the main() function now calling pthread_join().
+sum = 300000
+
+This is the main() function starting.
+the main() function now calling pthread_create().
+This is the main() function after pthread_create()
+the main() function now calling pthread_join().
+sum = 300000
