@@ -1,0 +1,61 @@
+========================================
+Assignment 3 – Performance Measurements
+========================================
+
+Machine Information
+-------------------
+CPU model: Apple M4 Pro
+Compiler: Apple clang version 17.0.0 (clang-1700.6.3.2)
+Compiler flags: -O2 -Wall -Wextra -lm
+Operating system:   ProductName:		macOS
+                    ProductVersion:		26.2
+                    BuildVersion:		25C56
+Date: Wed Feb 11
+
+Measurement Setup
+-----------------
+Program: ./galsim
+Timesteps: 100
+dt: 1e-5
+Graphics: 0
+Timing method: shell `time` command
+Measured value: user time
+
+----------------------------------------
+Results (-O2)
+----------------------------------------
+
+N=100
+user time = 0.00s
+
+N=500
+user time = 0.04s
+
+N=1000
+user time = 0.146s
+
+N=2000
+user time = 0.59s
+
+N=3000
+user time = 1.32s
+
+
+----------------------------------------
+Results (-O3 -march=native)
+----------------------------------------
+
+N=100
+user time = 0.00s
+
+N=500
+user time = 0.04s
+
+N=1000
+user time = 0.146s
+
+N=2000
+user time = 0.592s
+
+N=3000
+user time = 1.316s
