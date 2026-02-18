@@ -3,6 +3,7 @@
 #include <math.h>
 #include <string.h>
 #include <sys/time.h>
+#include <pthread.h>
 
 static double get_wall_seconds() {
   struct timeval tv;
@@ -14,16 +15,40 @@ static double get_wall_seconds() {
 double **A,**B,**C;
 int n;
 
+typedef struct {
+  int row_start;
+  int row_end;
+} thread_arg_t;
+
+static void *matmul_rows(void *arg)
+{
+  thread_arg_t *a = (thread_arg_t *)arg;
+
+  /* Thread-private rows of C -> no locks required. */
+  for (int i = a->row_start; i < a->row_end; i++)
+    for (int j = 0; j < n; j++) {
+      double sum = 0.0;
+      for (int k = 0; k < n; k++)
+        sum += A[i][k] * B[k][j];
+      C[i][j] = sum;
+    }
+
+  return NULL;
+}
+
 int main(int argc, char *argv[]) {
   int i, j, k;
 
-  if(argc != 2) {
-    printf("Please give one argument: the matrix size n\n");
+  if(argc != 2 && argc != 3) {
+    printf("Usage: %s <matrix_size_n> [num_threads]\n", argv[0]);
     return -1;
   }
 
   n = atoi(argv[1]);
-  
+  int num_threads = (argc == 3) ? atoi(argv[2]) : 4;
+  if (num_threads < 1) num_threads = 1;
+  if (num_threads > n) num_threads = n;
+
   //Allocate and fill matrices
   A = (double **)malloc(n*sizeof(double *));
   B = (double **)malloc(n*sizeof(double *));
@@ -44,11 +69,34 @@ int main(int argc, char *argv[]) {
   printf("Doing matrix-matrix multiplication...\n");
   double startTime = get_wall_seconds();
 
-  // Multiply C=A*B
-  for(i=0; i<n; i++)
-    for (j=0; j<n; j++)
-      for (k=0; k<n; k++)
-	C[i][j] += A[i][k] * B[k][j];
+  pthread_t *threads = (pthread_t *)malloc((size_t)num_threads * sizeof(*threads));
+  thread_arg_t *args  = (thread_arg_t *)malloc((size_t)num_threads * sizeof(*args));
+  if (!threads || !args) {
+    printf("Allocation failed\n");
+    free(threads);
+    free(args);
+    return -1;
+  }
+
+  /* Static row-block distribution to balance work and avoid synchronization. */
+  int base = n / num_threads;
+  int rem  = n % num_threads;
+  int next = 0;
+
+  for (int t = 0; t < num_threads; t++) {
+    int rows = base + (t < rem ? 1 : 0);
+    args[t].row_start = next;
+    args[t].row_end   = next + rows;
+    next = args[t].row_end;
+    pthread_create(&threads[t], NULL, matmul_rows, &args[t]);
+  }
+
+  /* Join is the only required synchronization before correctness check. */
+  for (int t = 0; t < num_threads; t++)
+    pthread_join(threads[t], NULL);
+
+  free(threads);
+  free(args);
 
   double timeTaken = get_wall_seconds() - startTime;
   printf("Elapsed time: %f wall seconds\n", timeTaken);

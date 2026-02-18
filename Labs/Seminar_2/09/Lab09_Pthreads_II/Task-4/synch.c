@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define NUM_THREADS	8
+/* Toggle for the experiment: set to 0 to remove the barrier effect. */
+#define USE_BARRIER 0
 
 pthread_mutex_t lock;
 pthread_cond_t mysignal;
@@ -27,7 +29,9 @@ void barrier() {
 void* HelloWorld(void* arg) {
   long id=(long)arg;
   printf("Hello World! %ld\n", id);
+#if USE_BARRIER
   barrier();
+#endif
   printf("Bye Bye World! %ld\n", id);
   return NULL;
 }
