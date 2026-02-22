@@ -1,0 +1,36 @@
+100 timesteps
+--------- 500 x 500 ------------
+Elapsed time: 0.035560 seconds
+Updates/sec: 7.030e+08
+Elapsed time: 0.033206 seconds
+Updates/sec: 7.529e+08
+Elapsed time: 0.033024 seconds
+Updates/sec: 7.570e+08
+Elapsed time: 0.033321 seconds
+Updates/sec: 7.503e+08
+Elapsed time: 0.033121 seconds
+Updates/sec: 7.548e+08
+
+--------- 1000 x 1000 ------------
+Elapsed time: 0.125955 seconds
+Updates/sec: 7.939e+08
+Elapsed time: 0.122238 seconds
+Updates/sec: 8.181e+08
+Elapsed time: 0.132923 seconds
+Updates/sec: 7.523e+08
+Elapsed time: 0.130725 seconds
+Updates/sec: 7.650e+08
+Elapsed time: 0.130639 seconds
+Updates/sec: 7.655e+08
+
+--------- 2000 x 2000 ------------
+Elapsed time: 0.505987 seconds
+Updates/sec: 7.905e+08
+Elapsed time: 0.519644 seconds
+Updates/sec: 7.698e+08
+Elapsed time: 0.529958 seconds
+Updates/sec: 7.548e+08
+Elapsed time: 0.472692 seconds
+Updates/sec: 8.462e+08
+Elapsed time: 0.483988 seconds
+Updates/sec: 8.265e+08

@@ -1,0 +1,51 @@
+Serial Optimized Results
+===== 500x500 =====
+Run 1
+Elapsed time: 0.008571 seconds
+Updates/sec: 2.917e+09
+Run 2
+Elapsed time: 0.006668 seconds
+Updates/sec: 3.749e+09
+Run 3
+Elapsed time: 0.006077 seconds
+Updates/sec: 4.114e+09
+Run 4
+Elapsed time: 0.005861 seconds
+Updates/sec: 4.266e+09
+Run 5
+Elapsed time: 0.006757 seconds
+Updates/sec: 3.700e+09
+
+===== 1000x1000 =====
+Run 1
+Elapsed time: 0.028573 seconds
+Updates/sec: 3.500e+09
+Run 2
+Elapsed time: 0.028336 seconds
+Updates/sec: 3.529e+09
+Run 3
+Elapsed time: 0.026820 seconds
+Updates/sec: 3.729e+09
+Run 4
+Elapsed time: 0.028955 seconds
+Updates/sec: 3.454e+09
+Run 5
+Elapsed time: 0.027432 seconds
+Updates/sec: 3.645e+09
+
+===== 2000x2000 =====
+Run 1
+Elapsed time: 0.104089 seconds
+Updates/sec: 3.843e+09
+Run 2
+Elapsed time: 0.104692 seconds
+Updates/sec: 3.821e+09
+Run 3
+Elapsed time: 0.102247 seconds
+Updates/sec: 3.912e+09
+Run 4
+Elapsed time: 0.096153 seconds
+Updates/sec: 4.160e+09
+Run 5
+Elapsed time: 0.088200 seconds
+Updates/sec: 4.535e+09
