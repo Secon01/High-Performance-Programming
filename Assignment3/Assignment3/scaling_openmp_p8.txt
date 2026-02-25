@@ -1,0 +1,17 @@
+N=2000
+Timing:
+  total  = 0.147008 s
+  force  = 0.133363 s (90.7%)
+  update = 0.006782 s (4.6%)
+N=5000
+Timing:
+  total  = 0.762213 s
+  force  = 0.744234 s (97.6%)
+  update = 0.008537 s (1.1%)
+N=10000
+Timing:
+  total  = 2.790147 s
+  force  = 2.770559 s (99.3%)
+  update = 0.009204 s (0.3%)
+N=20000
+fopen input: No such file or directory

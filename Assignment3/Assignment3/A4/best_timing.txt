@@ -1,0 +1,4 @@
+pthreads 0.731430 8
+openmp 0.755826 8
+Apple M4 Pro
+8

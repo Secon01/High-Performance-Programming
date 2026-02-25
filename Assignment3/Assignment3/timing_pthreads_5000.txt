@@ -1,0 +1,16 @@
+Timing:
+  total  = 3.286999 s
+  force  = 3.280076 s (99.8%)
+  update = 0.003186 s (0.1%)
+Timing:
+  total  = 2.509061 s
+  force  = 2.501314 s (99.7%)
+  update = 0.003764 s (0.2%)
+Timing:
+  total  = 1.398213 s
+  force  = 1.387715 s (99.2%)
+  update = 0.005233 s (0.4%)
+Timing:
+  total  = 0.731430 s
+  force  = 0.714150 s (97.6%)
+  update = 0.008580 s (1.2%)
