@@ -1,0 +1,60 @@
+=== Compile WITH OpenMP ===
+$ gcc-15 -fopenmp threads_doing_work.c -o threads_doing_work
+
+=== Run with 1 thread ===
+$ ./threads_doing_work 1
+Now I am going to do some work...
+Work done! My result j = 9000000000
+Wall time = 0.964104 seconds
+
+=== Run with 2 threads ===
+$ ./threads_doing_work 2
+Now I am going to do some work...
+Now I am going to do some work...
+Work done! My result j = 9000000000
+Work done! My result j = 9000000000
+Wall time = 1.004002 seconds
+
+=== Run with 4 threads ===
+$ ./threads_doing_work 4
+Now I am going to do some work...
+Now I am going to do some work...
+Now I am going to do some work...
+Now I am going to do some work...
+Work done! My result j = 9000000000
+Work done! My result j = 9000000000
+Work done! My result j = 9000000000
+Work done! My result j = 9000000000
+Wall time = 1.069309 seconds
+
+=== Run with 8 threads ===
+$ ./threads_doing_work 8
+Now I am going to do some work...
+Now I am going to do some work...
+Now I am going to do some work...
+Now I am going to do some work...
+Now I am going to do some work...
+Now I am going to do some work...
+Now I am going to do some work...
+Now I am going to do some work...
+Work done! My result j = 9000000000
+Work done! My result j = 9000000000
+Work done! My result j = 9000000000
+Work done! My result j = 9000000000
+Work done! My result j = 9000000000
+Work done! My result j = 9000000000
+Work done! My result j = 9000000000
+Work done! My result j = 9000000000
+Wall time = 1.043157 seconds
+
+Why `long int`?
+Because the loop runs billions of iterations. A 32-bit `int` can store at most 2,147,483,647, so it would overflow. `long int` safely handles larger values.
+
+Does wall time change with more threads?
+No significant change. Each thread performs the same full workload, so the total work is not reduced. Increasing threads does not speed up the program.
+
+What happens when threads > cores?
+Threads compete for CPU time. The OS performs context switching (oversubscription), which can slightly increase wall time.
+
+What does `omp_get_wtime()` measure?
+It measures wall-clock time (real elapsed execution time).

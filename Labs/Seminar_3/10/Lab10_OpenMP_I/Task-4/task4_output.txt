@@ -1,0 +1,18 @@
+=== Compile WITH OpenMP ===
+$ gcc-15 -fopenmp omptest.c -o omptest
+
+=== Run ===
+$ ./omptest
+Thread 0 got: A=3.70 B=1.20 x=88 y=77
+Thread 0 wrote result=15.44
+This is inside thread_func()!
+Thread 1 got: A=2.20 B=8.80 x=444 y=555
+Thread 1 wrote result=-91.64
+This is inside thread_func()!
+After parallel: arr[0].result = 15.44
+After parallel: arr[1].result = -91.64
+
+Each thread receives a pointer to a different struct element (arr[id]), so every thread works on its own input data. 
+The array is shared, but since each thread accesses a different index, there is no data race. 
+The computed value is stored in the result member of the struct, and after the parallel region finishes, main() can safely read these results. 
+This works because OpenMP has an implicit barrier at the end of the parallel block, so all threads complete before execution continues.

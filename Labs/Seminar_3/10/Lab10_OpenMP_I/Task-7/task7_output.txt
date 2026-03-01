@@ -1,0 +1,24 @@
+=== Compile WITH OpenMP ===
+$ gcc-15 -fopenmp primes_omp.c -lm -o primes_omp
+
+=== Run WITH OpenMP ===
+$ ./primes_omp 200000 4
+M=200000, threads=4
+Serial: primes=17984, time=0.012849 s
+OMP static: primes=17984, time=0.004920 s
+OMP dynamic: primes=17984, time=0.002612 s
+
+=== Compile WITHOUT OpenMP ===
+$ gcc-15 primes_omp.c -lm -o primes_serial
+
+=== Run WITHOUT OpenMP ===
+$ ./primes_serial 200000 4
+M=200000, threads=4
+Serial: primes=17984, time=0.000000 s
+OMP static: primes=17984, time=0.003442 s
+OMP dynamic: primes=17984, time=0.004839 s
+
+The program compiles and runs both with and without OpenMP support. 
+When compiled with -fopenmp, the parallel regions are executed using multiple threads. 
+When compiled without -fopenmp, the OpenMP pragmas are ignored and the program runs serially. 
+By guarding <omp.h> and OpenMP function calls using the _OPENMP preprocessor macro, the code becomes portable and works correctly even on compilers that do not support OpenMP.

@@ -1,0 +1,47 @@
+=== Compile WITH OpenMP ===
+$ gcc-15 -fopenmp program.c -o program
+
+=== Run with 2 threads (OMP_NUM_THREADS=2) ===
+$ export OMP_NUM_THREADS=2
+$ ./program
+Hello from thread 1 out of 4 threads
+This is inside thread_func()!
+Hello from thread 2 out of 4 threads
+Hello from thread 0 out of 4 threads
+This is inside thread_func()!
+This is inside thread_func()!
+Hello from thread 3 out of 4 threads
+This is inside thread_func()!
+
+=== Run with 4 threads (OMP_NUM_THREADS=4) ===
+$ export OMP_NUM_THREADS=4
+$ ./program
+Hello from thread 1 out of 4 threads
+Hello from thread 2 out of 4 threads
+This is inside thread_func()!
+This is inside thread_func()!
+Hello from thread 3 out of 4 threads
+This is inside thread_func()!
+Hello from thread 0 out of 4 threads
+This is inside thread_func()!
+
+=== Run with 8 threads (OMP_NUM_THREADS=8) ===
+$ export OMP_NUM_THREADS=8
+$ ./program
+Hello from thread 1 out of 4 threads
+Hello from thread 3 out of 4 threads
+This is inside thread_func()!
+Hello from thread 2 out of 4 threads
+This is inside thread_func()!
+Hello from thread 0 out of 4 threads
+This is inside thread_func()!
+This is inside thread_func()!
+
+$ unset OMP_NUM_THREADS
+
+OpenMP assigns each thread a unique ID using omp_get_thread_num(), ranging from 0 to n−1,
+where n is the total number of threads. The function omp_get_num_threads() returns the number
+of threads currently active inside the parallel region, while omp_get_max_threads() returns
+the maximum number of threads that OpenMP would use for a parallel region based on the current runtime settings. 
+Running the program with different values of OMP_NUM_THREADS confirms that the thread IDs range correctly from 0 
+to n−1 and that the total number of active threads matches the requested number.

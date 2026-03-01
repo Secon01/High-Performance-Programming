@@ -1,0 +1,37 @@
+=== Compile WITH OpenMP ===
+$ gcc-15 -fopenmp Ntest.c -o Ntest
+
+=== CASE A: NA=800000000, NB=0 (one thread does all work) ===
+$ gcc-15 -fopenmp Ntest.c -o Ntest
+$ ./Ntest
+This is the main() function starting.
+Wall time = 0.357299 seconds
+This is the main() function after the parallel block.
+result_A : 5600000000
+result_B : 0
+totalSum : 5600000000
+
+=== CASE B: NA=400000000, NB=400000000 (equal split) ===
+$ gcc-15 -fopenmp Ntest.c -o Ntest
+$ ./Ntest
+This is the main() function starting.
+Wall time = 0.195131 seconds
+This is the main() function after the parallel block.
+result_A : 2800000000
+result_B : 2800000000
+totalSum : 5600000000
+
+=== CASE C: NA=700000000, NB=100000000 (unequal split) ===
+$ gcc-15 -fopenmp Ntest.c -o Ntest
+$ ./Ntest
+This is the main() function starting.
+Wall time = 0.299686 seconds
+This is the main() function after the parallel block.
+result_A : 4900000000
+result_B : 700000000
+totalSum : 5600000000
+
+Wall time depends on the slower thread, so it is roughly proportional to max(NA, NB). 
+The equal split is fastest because both threads finish together. 
+When one thread does all the work, there is no speedup compared to the parallel case. 
+If one thread finishes early, it waits at the implicit barrier, so CPU usage may drop while the other thread continues executing.

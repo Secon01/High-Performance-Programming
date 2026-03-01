@@ -1,0 +1,45 @@
+=== Compile WITH OpenMP ====== Compile WITH OpenMP ===
+$ gcc-15 -fopenmp ompthreadtest.c -o ompthreadtest
+
+=== Run 1 (before critical), nThreads=4 ===
+$ ./ompthreadtest 4
+This is the main() function before the parallel block, nThreads = 4
+This is the main() function after the parallel block
+sum = 103070
+
+=== Run 2 (before critical), nThreads=4 ===
+$ ./ompthreadtest 4
+This is the main() function before the parallel block, nThreads = 4
+This is the main() function after the parallel block
+sum = 111016
+
+=== Run 3 (before critical), nThreads=8 ===
+$ ./ompthreadtest 8
+This is the main() function before the parallel block, nThreads = 8
+This is the main() function after the parallel block
+sum = 107926
+
+=== Recompile AFTER adding critical ===
+$ gcc-15 -fopenmp ompthreadtest.c -o ompthreadtest
+
+=== Run 1 (after critical), nThreads=4 ===
+$ ./ompthreadtest 4
+This is the main() function before the parallel block, nThreads = 4
+This is the main() function after the parallel block
+sum = 400000
+
+=== Run 2 (after critical), nThreads=4 ===
+$ ./ompthreadtest 4
+This is the main() function before the parallel block, nThreads = 4
+This is the main() function after the parallel block
+sum = 400000
+
+=== Run 3 (after critical), nThreads=8 ===
+$ ./ompthreadtest 8
+This is the main() function before the parallel block, nThreads = 8
+This is the main() function after the parallel block
+sum = 800000
+
+Before #pragma omp critical, sum varies between runs because multiple threads update the shared global variable simultaneously, causing a race condition and lost updates. 
+After adding #pragma omp critical, only one thread at a time updates sum, so the result becomes deterministic. 
+The correct result is sum = N * nThreads, which matches the outputs after critical (400000 for 4 threads and 800000 for 8 threads).

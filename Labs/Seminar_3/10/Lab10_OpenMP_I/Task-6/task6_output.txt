@@ -1,0 +1,34 @@
+=== Compile WITH OpenMP ===
+$ gcc-15 -fopenmp primes_omp.c -lm -o primes_omp
+
+=== Run: M=200000, threads=1 ===
+$ ./primes_omp 200000 1
+M=200000, threads=1
+Serial: primes=17984, time=0.010566 s
+OMP static: primes=17984, time=0.008829 s
+OMP dynamic: primes=17984, time=0.008794 s
+
+=== Run: M=200000, threads=2 ===
+$ ./primes_omp 200000 2
+M=200000, threads=2
+Serial: primes=17984, time=0.008792 s
+OMP static: primes=17984, time=0.005484 s
+OMP dynamic: primes=17984, time=0.005194 s
+
+=== Run: M=200000, threads=4 ===
+$ ./primes_omp 200000 4
+M=200000, threads=4
+Serial: primes=17984, time=0.009454 s
+OMP static: primes=17984, time=0.003095 s
+OMP dynamic: primes=17984, time=0.001998 s
+
+=== Run: M=200000, threads=8 ===
+$ ./primes_omp 200000 8
+M=200000, threads=8
+Serial: primes=17984, time=0.008714 s
+OMP static: primes=17984, time=0.001582 s
+OMP dynamic: primes=17984, time=0.000991 s
+
+In prime number computation the cost per iteration increases for larger numbers, so a simple static split can cause load imbalance. 
+Using dynamic scheduling improves load balancing because threads receive new work as they finish. 
+Speedup increases up to the number of physical cores, but beyond that there is little or no improvement due to overhead and resource contention.

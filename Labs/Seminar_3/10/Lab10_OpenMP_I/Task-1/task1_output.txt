@@ -1,0 +1,47 @@
+=== Compile WITHOUT OpenMP ===
+$ gcc-15 hello_openmp.c -o hello
+$ ./hello
+Bonjour!
+
+=== Compile WITH OpenMP ===
+$ gcc-15 -fopenmp hello_openmp.c -o hello_omp
+$ ./hello_omp
+Bonjour!
+Bonjour!
+Bonjour!
+Bonjour!
+Bonjour!
+
+=== num_threads(3) Test ===
+$ gcc-15 -fopenmp hello_openmp.c -o hello_omp
+$ ./hello_omp
+Bonjour!
+Bonjour!
+Bonjour!
+
+=== Default Thread Count Test ===
+$ gcc-15 -fopenmp hello_openmp.c -o hello_omp
+$ ./hello_omp
+Bonjour!
+Bonjour!
+Bonjour!
+Bonjour!
+Bonjour!
+Bonjour!
+Bonjour!
+Bonjour!
+Bonjour!
+Bonjour!
+Bonjour!
+Bonjour!
+Bonjour!
+Bonjour!
+
+=== OMP_NUM_THREADS=3 Test ===
+$ export OMP_NUM_THREADS=3
+$ ./hello_omp
+Bonjour!
+Bonjour!
+Bonjour!
+$ unset OMP_NUM_THREADS
+

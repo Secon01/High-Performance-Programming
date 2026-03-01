@@ -1,0 +1,101 @@
+===== TASK 9: build =====
++ make clean
+/bin/rm -f sort_test main.o sort_funcs.o
+
++ make
+gcc-15 -O3 -Wall -Werror -fopenmp -c main.c 
+gcc-15 -O3 -Wall -Werror -fopenmp -c sort_funcs.c
+gcc-15 -fopenmp main.o sort_funcs.o -o sort_test
+
+===== TASK 9: run (nested demo + sort) =====
++ ./sort_test 2000000 1
+N = 2000000
+nThreads = 1
+omp_get_nested() initially = 0
+After omp_set_nested(0): omp_get_nested() = 0
+[outer] tid=0 / 2
+  [inner] tid=0 / 1
+[outer] tid=1 / 2
+  [inner] tid=0 / 1
+After omp_set_nested(1): omp_get_nested() = 1
+[outer] tid=0 / 2
+[outer] tid=1 / 2
+  [inner] tid=0 / 2
+  [inner] tid=0 / 2
+  [inner] tid=1 / 2
+  [inner] tid=1 / 2
+Before sort: the number 7 occurs 19978 times in the list.
+Sorting list with length 2000000 took   0.107 wall seconds.
+After sort : the number 7 occurs 19978 times in the list.
+OK, list is sorted!
+
+-----
++ ./sort_test 2000000 2
+N = 2000000
+nThreads = 2
+omp_get_nested() initially = 0
+After omp_set_nested(0): omp_get_nested() = 0
+[outer] tid=0 / 2
+  [inner] tid=0 / 1
+[outer] tid=1 / 2
+  [inner] tid=0 / 1
+After omp_set_nested(1): omp_get_nested() = 1
+[outer] tid=0 / 2
+[outer] tid=1 / 2
+  [inner] tid=0 / 2
+  [inner] tid=0 / 2
+  [inner] tid=1 / 2
+  [inner] tid=1 / 2
+Before sort: the number 7 occurs 19978 times in the list.
+Sorting list with length 2000000 took   0.049 wall seconds.
+After sort : the number 7 occurs 19978 times in the list.
+OK, list is sorted!
+
+-----
++ ./sort_test 2000000 4
+N = 2000000
+nThreads = 4
+omp_get_nested() initially = 0
+After omp_set_nested(0): omp_get_nested() = 0
+[outer] tid=0 / 2
+  [inner] tid=0 / 1
+[outer] tid=1 / 2
+  [inner] tid=0 / 1
+After omp_set_nested(1): omp_get_nested() = 1
+[outer] tid=0 / 2
+[outer] tid=1 / 2
+  [inner] tid=0 / 2
+  [inner] tid=1 / 2
+  [inner] tid=0 / 2
+  [inner] tid=1 / 2
+Before sort: the number 7 occurs 19978 times in the list.
+Sorting list with length 2000000 took   0.031 wall seconds.
+After sort : the number 7 occurs 19978 times in the list.
+OK, list is sorted!
+
+-----
++ ./sort_test 2000000 8
+N = 2000000
+nThreads = 8
+omp_get_nested() initially = 0
+After omp_set_nested(0): omp_get_nested() = 0
+[outer] tid=0 / 2
+  [inner] tid=0 / 1
+[outer] tid=1 / 2
+  [inner] tid=0 / 1
+After omp_set_nested(1): omp_get_nested() = 1
+[outer] tid=0 / 2
+[outer] tid=1 / 2
+  [inner] tid=0 / 2
+  [inner] tid=1 / 2
+  [inner] tid=0 / 2
+  [inner] tid=1 / 2
+Before sort: the number 7 occurs 19978 times in the list.
+Sorting list with length 2000000 took   0.021 wall seconds.
+After sort : the number 7 occurs 19978 times in the list.
+OK, list is sorted!
+
+With nested parallelism disabled, the inner region runs serially; when enabled, each outer thread spawns its own inner team, increasing concurrency. 
+Merge sort is race-free because each thread works on a separate subarray and merging occurs after the implicit barrier. 
+Timings: 1 thread = 0.107s, 2 threads = 0.049s (~2.2×), 4 threads = 0.031s (~3.5×), 8 threads = 0.021s (~5.1×). 
+Speedup is sublinear due to thread creation overhead, synchronization, and memory bandwidth limits.
