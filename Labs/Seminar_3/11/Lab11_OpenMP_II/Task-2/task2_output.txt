@@ -1,0 +1,52 @@
+===== TASK 2: ORIGINAL BUILD =====
++ gcc-15 -O3 -Wall -Werror -fopenmp ompsections.c -o ompsections_orig
+
+===== ORIGINAL: OMP_NUM_THREADS=1 =====
++ OMP_NUM_THREADS=1 /usr/bin/time -p ./ompsections_orig
+funcA() result: x = 1.648721
+funcB() result: x = 2.718282
+real 0.72
+user 0.88
+sys 0.00
+
+===== ORIGINAL: OMP_NUM_THREADS=2 =====
++ OMP_NUM_THREADS=2 /usr/bin/time -p ./ompsections_orig
+funcB() result: x = 2.718282
+funcA() result: x = 1.648721
+real 0.41
+user 0.81
+sys 0.00
+
+===== ORIGINAL: OMP_NUM_THREADS=3 =====
++ OMP_NUM_THREADS=3 /usr/bin/time -p ./ompsections_orig
+funcA() result: x = 1.648721
+funcB() result: x = 2.718282
+real 0.41
+user 0.82
+sys 0.00
+
+===== TASK 2: MODIFIED BUILD (3 sections) =====
++ gcc-15 -O3 -Wall -Werror -fopenmp ompsections.c -o ompsections_3sec
+
+===== MODIFIED: OMP_NUM_THREADS=2 =====
++ OMP_NUM_THREADS=2 /usr/bin/time -p ./ompsections_3sec
+funcB() result: x = 2.718282
+funcA() result: x = 1.648721
+funcC() result: x = 4.481689
+real 1.22
+user 1.27
+sys 0.00
+
+===== MODIFIED: OMP_NUM_THREADS=3 =====
++ OMP_NUM_THREADS=3 /usr/bin/time -p ./ompsections_3sec
+funcB() result: x = 2.718282
+funcC() result: x = 4.481689
+funcA() result: x = 1.648721
+real 0.43
+user 1.29
+sys 0.00
+
+With 2 sections, going from 1 thread (real ≈ 0.72 s) to 2 threads (real ≈ 0.41 s) nearly halves the wall time, since funcA and funcB run in parallel; 
+using 3 threads gives no further speedup because there are only 2 sections. 
+After adding a third section, 2 threads must execute the 3 sections in two waves, so real time increases to ≈ 1.22 s. 
+With 3 threads, all three sections run concurrently and real time drops to ≈ 0.43 s. The higher user time reflects summed CPU time across threads.

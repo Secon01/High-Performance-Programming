@@ -1,0 +1,7 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     reduce_reduction
+relocations:
+  - { offset: 0x94, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x100, symBinAddr: 0x100000720, symSize: 0xC4 }
+  - { offset: 0xCB, size: 0x8, addend: 0x0, symName: _main._omp_fn.0, symObjAddr: 0x0, symBinAddr: 0x100000660, symSize: 0xAC }
+...

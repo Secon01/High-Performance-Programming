@@ -15,16 +15,11 @@ int main(int argc, char *argv[]) {
   const int M = 200;
   double arr[M];
 
-#pragma omp parallel num_threads(3)
-  {
-
-    int i;
-#pragma omp for
-      for(i = 0; i < M; i++)
-	arr[i] = f(i);
-
-  }
-
+  int i;
+#pragma omp parallel for
+  for(i = 0; i < M; i++)
+    arr[i] = f(i);
+  
   /* Sum up results. */
   double sum = 0;
   int k;

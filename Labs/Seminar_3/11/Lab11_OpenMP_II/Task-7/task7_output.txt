@@ -1,0 +1,72 @@
+===== TASK 7: build =====
++ make clean
+rm -f program
++ make
+gcc-15 -O3 -fopenmp -Wall program.c -o program
+
+===== TASK 7: Case A (N=80000 M=80) =====
++ /usr/bin/time -p ./program 80000 80 1
+N = 80000
+M = 80
+nThreads = 1
+nBytesA = 25600000
+finalSum = 2646993664.000000
+real 1.97
+user 1.64
+sys 0.06
+
++ /usr/bin/time -p ./program 80000 80 4
+N = 80000
+M = 80
+nThreads = 4
+nBytesA = 25600000
+finalSum = 2646993664.000000
+real 0.52
+user 1.70
+sys 0.04
+
+===== TASK 7: Case B (N=800 M=8000) =====
++ /usr/bin/time -p ./program 800 8000 1
+N = 800
+M = 8000
+nThreads = 1
+nBytesA = 25600000
+finalSum = 2553731840.000000
+real 2.11
+user 1.99
+sys 0.11
+
++ /usr/bin/time -p ./program 800 8000 4
+N = 800
+M = 8000
+nThreads = 4
+nBytesA = 25600000
+finalSum = 2553731840.000000
+real 0.55
+user 1.95
+sys 0.01
+
+===== TASK 7: Case C (N=8 M=800000) =====
++ /usr/bin/time -p ./program 8 800000 1
+N = 8
+M = 800000
+nThreads = 1
+nBytesA = 25600000
+finalSum = 536870912.000000
+real 0.56
+user 0.55
+sys 0.01
+
++ /usr/bin/time -p ./program 8 800000 4
+N = 8
+M = 800000
+nThreads = 4
+nBytesA = 25600000
+finalSum = 536870912.000000
+real 0.69
+user 2.48
+sys 0.04
+
+Case A and B scale well: real time drops from 1.97→0.52 (~3.8×) and 2.11→0.55 (~3.8×) with 4 threads, and user time stays ~constant (~2 s), meaning little thread interference.
+Case C shows negative scaling: real 0.56→0.69 and user 0.55→2.48, because with very small N=8 threads write to C elements on the same cache line, causing severe false sharing and lots of cache-line ping-pong. 
+This is why speedup is not the same even though N*M is fixed.

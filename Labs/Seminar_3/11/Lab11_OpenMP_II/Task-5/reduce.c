@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
 
   int i;
   const int n = 1000000;
-  double sum, globsum;
+  double globsum;
   double* A;
   A = (double*)malloc(n*sizeof(double));
 
@@ -24,26 +24,16 @@ int main(int argc, char *argv[]) {
   for(repeat = 0; repeat < 400; repeat++) {
 
     globsum=0.0;
-#pragma omp parallel num_threads(nThreads) private(sum)
-    {
-      sum=0.0;
 
-#pragma omp for
-      for (i = 0; i < n ; i++) { 
-	sum += A[i];
-      }
-
-#pragma omp critical
-      {
-	globsum+=sum;
-      }
+#pragma omp parallel for num_threads(nThreads) reduction(+:globsum)
+    for (i = 0; i < n ; i++) {
+      globsum += A[i];
     }
-
-  }
 
   printf("Global sum is: %f\n",  globsum);
 
   free(A);
 
   return 0;
+}
 }

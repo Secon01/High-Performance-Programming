@@ -1,0 +1,30 @@
+===== TASK 6: build =====
++ make clean
+rm -f pi
++ make
+gcc-15 -Wall -O3 -fopenmp -o pi pi.c
+
+===== TASK 6: run (1 thread) =====
++ /usr/bin/time -p ./pi 1
+PI is approx. 3.1415926535899894
+real 0.65
+user 0.39
+sys 0.00
+
+===== TASK 6: run (2 threads) =====
++ /usr/bin/time -p ./pi 2
+PI is approx. 3.1415926535895977
+real 0.20
+user 0.39
+sys 0.00
+
+===== TASK 6: run (4 threads) =====
++ /usr/bin/time -p ./pi 4
+PI is approx. 3.1415926535898682
+real 0.11
+user 0.43
+sys 0.00
+
+The OpenMP version computes a correct π (≈ 3.14159265) and speeds up from real 0.65 s (1 thread) to 0.20 s (2 threads) and 0.11 s (4 threads), i.e. ~3.3× (2 threads) and ~5.9× (4 threads) vs the 1-thread run. 
+This is achieved by parallelizing the integration loop and combining partial sums with reduction(+:sum), avoiding races. 
+Compared to Pthreads, OpenMP needs far fewer code changes because thread creation, work sharing, and reduction are handled by directives.

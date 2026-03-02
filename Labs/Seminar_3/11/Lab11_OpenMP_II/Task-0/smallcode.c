@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <omp.h>
 
 int main(int argc, char *argv[]) {
   const int N = 4;

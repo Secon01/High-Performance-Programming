@@ -20,17 +20,25 @@ int main(int argc, char *argv[]) {
         return -1;
     }
     int N = atoi(argv[1]);
-    int M=100,i;
+    int M=100;
     double result[M];
     double finalresult=0;
     double time;
     
     time = omp_get_wtime();
-    for (int i=0;i<M;i++){
-        f(N,i,&result[i]);
+
+    #pragma omp parallel
+    {
+    #pragma omp single
+        {
+            for (int i = 0; i < M; i++) {
+    #pragma omp task firstprivate(i) shared(result, N)
+                f(N, i, &result[i]);
+            }
+    #pragma omp taskwait
+        }
     }
-    time = omp_get_wtime()-time;
- 
+    time = omp_get_wtime() - time;
     for (int i=0;i<M;i++)
         finalresult+=result[i];
     

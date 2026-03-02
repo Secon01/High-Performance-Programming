@@ -6,7 +6,7 @@ int main(int argc, char *argv[]) {
   a = 100;
   b = 20;
 
-#pragma omp parallel private(a)
+#pragma omp parallel firstprivate(a)
   {
     a += b;
     printf("a= %d b= %d\n",a,b);

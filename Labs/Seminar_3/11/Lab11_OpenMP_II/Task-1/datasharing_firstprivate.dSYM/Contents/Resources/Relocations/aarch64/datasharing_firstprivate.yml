@@ -1,0 +1,8 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     datasharing_firstprivate
+relocations:
+  - { offset: 0x19, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x1000005C0, symSize: 0x58 }
+  - { offset: 0x8C, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x1000005C0, symSize: 0x58 }
+  - { offset: 0xC1, size: 0x8, addend: 0x0, symName: _main._omp_fn.0, symObjAddr: 0x58, symBinAddr: 0x100000618, symSize: 0x60 }
+...

@@ -1,0 +1,47 @@
+===== TASK 5: build (ORIGINAL: critical) =====
++ gcc-15 -O3 -g -Wall -Werror -fopenmp reduce.c -o reduce_critical
+
+===== TASK 5: run (ORIGINAL: critical) =====
++ /usr/bin/time -p ./reduce_critical 1
+Global sum is: 499999500000.000000
+real 0.54
+user 0.26
+sys 0.00
+
++ /usr/bin/time -p ./reduce_critical 2
+Global sum is: 499999500000.000000
+real 0.14
+user 0.26
+sys 0.01
+
++ /usr/bin/time -p ./reduce_critical 4
+Global sum is: 499999500000.000000
+real 0.09
+user 0.27
+sys 0.02
+
+===== TASK 5: build (MODIFIED: reduction) =====
++ gcc-15 -O3 -g -Wall -Werror -fopenmp reduce.c -o reduce_reduction
+
+===== TASK 5: run (MODIFIED: reduction) =====
++ /usr/bin/time -p ./reduce_reduction 1
+Global sum is: 499999500000.000000
+real 0.35
+user 0.00
+sys 0.00
+
++ /usr/bin/time -p ./reduce_reduction 2
+Global sum is: 499999500000.000000
+real 0.00
+user 0.00
+sys 0.00
+
++ /usr/bin/time -p ./reduce_reduction 4
+Global sum is: 499999500000.000000
+real 0.00
+user 0.00
+sys 0.00
+
+Both versions compute the correct result (Global sum = 499999500000). The critical version shows speedup (real 0.54 → 0.14 → 0.09 for 1/2/4 threads) but still has a serialization point when updating globsum. 
+With reduction(+:globsum), the critical section is removed and threads accumulate locally then combine once, but for 2 and 4 threads the runtime is so small that /usr/bin/time -p rounds it to 0.00,
+so you need a larger workload (or more repeats) to measure the real speedup reliably.

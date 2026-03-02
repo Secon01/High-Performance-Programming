@@ -1,0 +1,20 @@
+===== TASK 8: build =====
++ gcc-15 -O3 -g -Wall -Werror -fopenmp task_example_code.c -o task_example
+
+===== TASK 8: run (OMP_NUM_THREADS=1, N=500) =====
++ OMP_NUM_THREADS=1 /usr/bin/time -p ./task_example 500
+Time = 1.171235  finalSum = 23419161562.499748
+real 1.52
+user 1.10
+sys 0.05
+
+===== TASK 8: run (OMP_NUM_THREADS=4, N=500) =====
++ OMP_NUM_THREADS=4 /usr/bin/time -p ./task_example 500
+Time = 0.283928  finalSum = 23419161562.499748
+real 0.28
+user 1.10
+sys 0.00
+
+With tasks the result stays correct (finalSum = 23419161562.499748) and wall time drops from real 1.52 s (1 thread) to 0.28 s (4 threads),
+ ~5.4× speedup. omp parallel creates the team, omp single makes one thread generate tasks, and the other threads execute them; 
+ taskwait ensures all tasks finish before stopping the timer. The user time stays ~1.10 s because total CPU work is similar, but it’s distributed across threads so the elapsed time is much smaller.

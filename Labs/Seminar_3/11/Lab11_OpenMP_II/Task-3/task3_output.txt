@@ -1,0 +1,79 @@
+===== TASK 3: simple-loop SERIAL build (no -fopenmp) =====
++ gcc-15 -O3 -g -Wall simple-loop.c -o simple_serial
+simple-loop.c: In function 'main':
+simple-loop.c:18: warning: ignoring '#pragma omp parallel' [-Wunknown-pragmas]
+   18 | #pragma omp parallel num_threads(3)
+simple-loop.c:22: warning: ignoring '#pragma omp for' [-Wunknown-pragmas]
+   22 | #pragma omp for
+
+===== TASK 3: simple-loop SERIAL run (time) =====
++ /usr/bin/time -p ./simple_serial
+sum = 19999.749173
+real 1.11
+user 0.83
+sys 0.00
+
+===== TASK 3: simple-loop OMP build (-fopenmp) =====
++ gcc-15 -O3 -g -Wall -Werror -fopenmp simple-loop.c -o simple_omp
+
+===== TASK 3: simple-loop OMP run (OMP_NUM_THREADS=1) =====
++ OMP_NUM_THREADS=1 /usr/bin/time -p ./simple_omp
+sum = 19999.749173
+real 1.10
+user 0.81
+sys 0.00
+
+===== TASK 3: simple-loop OMP run (OMP_NUM_THREADS=2) =====
++ OMP_NUM_THREADS=2 /usr/bin/time -p ./simple_omp
+sum = 19999.749173
+real 0.41
+user 0.82
+sys 0.00
+
+===== TASK 3: simple-loop OMP run (OMP_NUM_THREADS=3) =====
++ OMP_NUM_THREADS=3 /usr/bin/time -p ./simple_omp
+sum = 19999.749173
+real 0.29
+user 0.87
+sys 0.00
+
+===== TASK 3: simple-loop OMP run (OMP_NUM_THREADS=4) =====
++ OMP_NUM_THREADS=4 /usr/bin/time -p ./simple_omp
+sum = 19999.749173
+real 0.22
+user 0.87
+sys 0.00
+
+===== TASK 3: simple-loop OMP build (parallel for) =====
++ gcc-15 -O3 -g -Wall -Werror -fopenmp simple-loop.c -o simple_parfor
+
+===== TASK 3: simple-loop OMP run (parallel for, OMP_NUM_THREADS=3) =====
++ OMP_NUM_THREADS=3 /usr/bin/time -p ./simple_parfor
+sum = 19999.749173
+real 0.60
+user 0.93
+sys 0.00
+
+===== TASK 3: other-loop SERIAL build/run =====
++ gcc-15 -O3 -g -Wall other-loop.c -o other_serial
+
++ /usr/bin/time -p ./other_serial
+sum = 83771.675509
+real 1.08
+user 0.82
+sys 0.00
+
+===== TASK 3: other-loop OMP build (careless parallel for) =====
++ gcc-15 -O3 -g -Wall -Werror -fopenmp other-loop.c -o other_bad
+
+===== TASK 3: other-loop OMP run x3 (OMP_NUM_THREADS=4) =====
++ run1: OMP_NUM_THREADS=4 ./other_bad
+sum = 26582.933087
++ run2: OMP_NUM_THREADS=4 ./other_bad
+sum = 26582.933087
++ run3: OMP_NUM_THREADS=4 ./other_bad
+sum = 26582.933087
+
+simple-loop.c stays correct (sum = 19999.749173) and speeds up from real 1.11 s (serial) to 0.22 s with 4 threads, since iterations are independent (arr[i] written once). 
+parallel for is equivalent logically, but in our run it was slower (real 0.60 s at 3 threads), likely due to scheduling/overhead differences. 
+In other-loop.c, the serial sum is 83771.675509, but the “careless” parallel for gives a wrong sum (26582.933087) because y is shared and updated inside the loop, creating a race and breaking the loop-carried dependency.

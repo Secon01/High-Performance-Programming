@@ -1,0 +1,30 @@
+===== TASK 1: build (original: private(a))  =====
++ gcc-15 -O0 -g -Wall -fopenmp datasharing.c -o datasharing_private
+datasharing.c: In function 'main._omp_fn.0':
+datasharing.c:11:7: warning: 'a' is used uninitialized [-Wuninitialized]
+   11 |     a += b;
+      |     ~~^~~~
+datasharing.c:5:7: note: 'a' was declared here
+    5 |   int a, b;
+      |       ^
+
+===== TASK 1: run (original: private(a)) =====
++ OMP_NUM_THREADS=4 ./datasharing_private
+a= -692043676 b= 20
+a= 20 b= 20
+a= 68787724 b= 20
+a= 68787724 b= 20
+
+===== TASK 1: build (fixed: firstprivate(a)) =====
++ gcc-15 -O0 -g -Wall -Werror -fopenmp datasharing.c -o datasharing_firstprivate
+
+===== TASK 1: run (fixed: firstprivate(a)) =====
++ OMP_NUM_THREADS=4 ./datasharing_firstprivate
+a= 120 b= 20
+a= 120 b= 20
+a= 120 b= 20
+a= 120 b= 20
+
+With private(a), each thread gets its own uninitialized copy of a, so a += b uses an indeterminate value; therefore a is unpredictable, while b = 20 is consistent because it is shared. 
+The output order is also non-deterministic due to parallel execution. After changing to firstprivate(a), each thread’s a is initialized to 100, so all threads compute a = 120 deterministically. 
+The lastprivate clause copies the value from the logically last iteration back to the original variable after the parallel region.

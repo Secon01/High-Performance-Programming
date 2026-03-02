@@ -1,0 +1,62 @@
+===== TASK 4: build (schedule(runtime)) =====
++ gcc-15 -O3 -g -Wall -Werror -fopenmp loop.c -o loop
+
+===== TASK 4: baseline (no OMP_SCHEDULE) =====
++ OMP_NUM_THREADS=4 /usr/bin/time -p ./loop 4
+Time taken: 0.672568 sec
+sum = 12497500.000000
+real 0.96
+user 1.61
+sys 0.00
+
+===== TASK 4: static =====
++ OMP_NUM_THREADS=4 OMP_SCHEDULE='static' /usr/bin/time -p ./loop 4
+Time taken: 0.650721 sec
+sum = 12497500.000000
+real 0.65
+user 1.51
+sys 0.00
+
+===== TASK 4: static,1 =====
++ OMP_NUM_THREADS=4 OMP_SCHEDULE='static,1' /usr/bin/time -p ./loop 4
+Time taken: 0.667072 sec
+sum = 12497500.000000
+real 0.67
+user 1.55
+sys 0.00
+
+===== TASK 4: dynamic,1 =====
++ OMP_NUM_THREADS=4 OMP_SCHEDULE='dynamic,1' /usr/bin/time -p ./loop 4
+Time taken: 0.649633 sec
+sum = 12497500.000000
+real 0.65
+user 1.51
+sys 0.00
+
+===== TASK 4: dynamic,10 =====
++ OMP_NUM_THREADS=4 OMP_SCHEDULE='dynamic,10' /usr/bin/time -p ./loop 4
+Time taken: 0.668094 sec
+sum = 12497500.000000
+real 0.67
+user 1.55
+sys 0.00
+
+===== TASK 4: guided,1 =====
++ OMP_NUM_THREADS=4 OMP_SCHEDULE='guided,1' /usr/bin/time -p ./loop 4
+Time taken: 0.658408 sec
+sum = 12497500.000000
+real 0.66
+user 1.53
+sys 0.00
+
+===== TASK 4: guided,10 =====
++ OMP_NUM_THREADS=4 OMP_SCHEDULE='guided,10' /usr/bin/time -p ./loop 4
+Time taken: 0.654882 sec
+sum = 12497500.000000
+real 0.65
+user 1.53
+sys 0.00
+
+With 4 threads the result stays correct for all schedules (sum = 12497500), so the loop iterations are independent. 
+The baseline runtime schedule gave real ≈ 0.96 s, while the best wall times were ≈ 0.65 s (static / dynamic,1 / guided,10 all essentially tied). 
+Here scheduling doesn’t change much because overhead vs load-balance tradeoffs roughly cancel out at this problem size. User time > real because CPU time is summed across threads.

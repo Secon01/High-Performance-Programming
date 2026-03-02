@@ -1,0 +1,5 @@
+Explanation:
+
+Without -fopenmp, the OpenMP pragma is ignored and Valgrind reports “no leaks are possible,” confirming the program has no leaks. 
+With -fopenmp, Valgrind reports “possibly lost” and “still reachable” blocks originating from libgomp and thread creation inside the OpenMP runtime; 
+since “definitely lost” is zero, these reports are due to the OpenMP implementation rather than a leak in the user program.
