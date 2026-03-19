@@ -1,0 +1,3 @@
+Threads: 1
+Elapsed time: 2.072989 seconds
+Updates/sec: 2.223e+04

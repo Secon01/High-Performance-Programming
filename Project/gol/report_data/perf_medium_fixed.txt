@@ -1,0 +1,150 @@
+CASE=medium W=1000 H=1000 S=100 THREADS=1 RUN=1
+Threads: 1
+Elapsed time: 0.030678 seconds
+Updates/sec: 3.247e+09
+
+CASE=medium W=1000 H=1000 S=100 THREADS=1 RUN=2
+Threads: 1
+Elapsed time: 0.025277 seconds
+Updates/sec: 3.940e+09
+
+CASE=medium W=1000 H=1000 S=100 THREADS=1 RUN=3
+Threads: 1
+Elapsed time: 0.023131 seconds
+Updates/sec: 4.306e+09
+
+CASE=medium W=1000 H=1000 S=100 THREADS=1 RUN=4
+Threads: 1
+Elapsed time: 0.021490 seconds
+Updates/sec: 4.635e+09
+
+CASE=medium W=1000 H=1000 S=100 THREADS=1 RUN=5
+Threads: 1
+Elapsed time: 0.024874 seconds
+Updates/sec: 4.004e+09
+
+CASE=medium W=1000 H=1000 S=100 THREADS=2 RUN=1
+Threads: 2
+Elapsed time: 0.012862 seconds
+Updates/sec: 7.744e+09
+
+CASE=medium W=1000 H=1000 S=100 THREADS=2 RUN=2
+Threads: 2
+Elapsed time: 0.013051 seconds
+Updates/sec: 7.632e+09
+
+CASE=medium W=1000 H=1000 S=100 THREADS=2 RUN=3
+Threads: 2
+Elapsed time: 0.013068 seconds
+Updates/sec: 7.622e+09
+
+CASE=medium W=1000 H=1000 S=100 THREADS=2 RUN=4
+Threads: 2
+Elapsed time: 0.013439 seconds
+Updates/sec: 7.411e+09
+
+CASE=medium W=1000 H=1000 S=100 THREADS=2 RUN=5
+Threads: 2
+Elapsed time: 0.013276 seconds
+Updates/sec: 7.502e+09
+
+CASE=medium W=1000 H=1000 S=100 THREADS=4 RUN=1
+Threads: 4
+Elapsed time: 0.007970 seconds
+Updates/sec: 1.250e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=4 RUN=2
+Threads: 4
+Elapsed time: 0.007870 seconds
+Updates/sec: 1.266e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=4 RUN=3
+Threads: 4
+Elapsed time: 0.007910 seconds
+Updates/sec: 1.259e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=4 RUN=4
+Threads: 4
+Elapsed time: 0.007835 seconds
+Updates/sec: 1.271e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=4 RUN=5
+Threads: 4
+Elapsed time: 0.007923 seconds
+Updates/sec: 1.257e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=8 RUN=1
+Threads: 8
+Elapsed time: 0.006884 seconds
+Updates/sec: 1.447e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=8 RUN=2
+Threads: 8
+Elapsed time: 0.006895 seconds
+Updates/sec: 1.445e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=8 RUN=3
+Threads: 8
+Elapsed time: 0.006931 seconds
+Updates/sec: 1.437e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=8 RUN=4
+Threads: 8
+Elapsed time: 0.006826 seconds
+Updates/sec: 1.459e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=8 RUN=5
+Threads: 8
+Elapsed time: 0.006916 seconds
+Updates/sec: 1.440e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=12 RUN=1
+Threads: 12
+Elapsed time: 0.007113 seconds
+Updates/sec: 1.400e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=12 RUN=2
+Threads: 12
+Elapsed time: 0.007198 seconds
+Updates/sec: 1.384e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=12 RUN=3
+Threads: 12
+Elapsed time: 0.007913 seconds
+Updates/sec: 1.259e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=12 RUN=4
+Threads: 12
+Elapsed time: 0.007567 seconds
+Updates/sec: 1.316e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=12 RUN=5
+Threads: 12
+Elapsed time: 0.007167 seconds
+Updates/sec: 1.390e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=14 RUN=1
+Threads: 14
+Elapsed time: 0.007926 seconds
+Updates/sec: 1.257e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=14 RUN=2
+Threads: 14
+Elapsed time: 0.008651 seconds
+Updates/sec: 1.151e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=14 RUN=3
+Threads: 14
+Elapsed time: 0.008573 seconds
+Updates/sec: 1.162e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=14 RUN=4
+Threads: 14
+Elapsed time: 0.008425 seconds
+Updates/sec: 1.182e+10
+
+CASE=medium W=1000 H=1000 S=100 THREADS=14 RUN=5
+Threads: 14
+Elapsed time: 0.008382 seconds
+Updates/sec: 1.188e+10
+

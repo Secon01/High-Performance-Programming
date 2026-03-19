@@ -44,4 +44,3 @@ Bonjour!
 Bonjour!
 Bonjour!
 $ unset OMP_NUM_THREADS
-

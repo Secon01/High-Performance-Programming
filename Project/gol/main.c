@@ -1,153 +1,278 @@
-#include "gol.h"    
-#include <stdlib.h>
+#include "gol.h"
+
+#include <pthread.h>
+#include <stdint.h>
 #include <stdio.h>
-#include <unistd.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
-#include <pthread.h>
-#include "barrier.h"
-// Print command-line usage
-static void usage(const char *prog) {
-    printf("Usage: %s [-W width] [-H height] [-s steps] [-t threads] [-p prob] [-seed N] [-print]\n", prog);
+
+/*
+ * Shared state for the persistent-worker version.
+ * The main thread publishes one generation at a time, workers compute their
+ * own row blocks, and then the main thread waits until all workers finish.
+ */
+typedef struct {
+    pthread_mutex_t mutex;
+    pthread_cond_t step_ready_cv;
+    pthread_cond_t step_done_cv;
+
+    const uint8_t *grid;   /* Read-only buffer for the current generation. */
+    uint8_t *next;         /* Output buffer for the next generation. */
+
+    int worker_count;      /* Number of background workers (main thread excluded). */
+    int published_step;    /* Monotonic generation counter published by the main thread. */
+    int completed_workers; /* Workers that have finished the current generation. */
+    int stop;              /* Set to 1 when workers should exit. */
+} sync_state_t;
+
+typedef struct {
+    int start_row;
+    int end_row;
+    int width;
+    sync_state_t *sync;
+} worker_arg_t;
+
+static void usage(const char *prog)
+{
+    printf("Usage: %s [-W width] [-H height] [-s steps] [-t threads] [-p prob] [-seed N] [-print]\n",
+           prog);
 }
-// Set wall-clock timer
-double get_wall_seconds(void)
+
+static double get_wall_seconds(void)
 {
     struct timeval tv;
     gettimeofday(&tv, NULL);
     return (double)tv.tv_sec + (double)tv.tv_usec * 1e-6;
 }
-// Thread arguments
-typedef struct {
-    int tid;                // thread id
-    int start_row, end_row; // row range
-    int W, H, steps;        // grid dimensions and timesteps
-    int do_print;              // printing enabled flag (debug only)
 
-    uint8_t **grid_ptr;   // pointer to shared pointer (grid)
-    uint8_t **next_ptr;   // pointer to shared pointer (next)
+/*
+ * Split interior rows [1, height - 1) into almost equal contiguous blocks.
+ * Contiguous blocks are simple, cache-friendly, and easy to explain.
+ */
+static void get_row_range(int tid, int total_threads, int height,
+                          int *start_row, int *end_row)
+{
+    const int first = 1;
+    const int last = (height > 1) ? (height - 1) : 1;
+    const int interior_rows = last - first;
 
-    barrier_t *barrier;   // shared reusable barrier
-} thread_arg_t;
-
-// Worker thread: compute its rows each timestep and sync via barriers
-static void *worker(void *argp) {
-    thread_arg_t *a = (thread_arg_t *)argp;
-
-    for (int t = 0; t < a->steps; t++) {
-        uint8_t *grid = *a->grid_ptr;   // read shared curr pointer
-        uint8_t *next = *a->next_ptr;   // read shared next pointer
-
-        // Handle tiny grids with no interior (fixed-dead makes everything dead)
-        if (a->W <= 2 || a->H <= 2) {
-            if (a->tid == 0) fill_zero(next, a->W, a->H);  // only one thread writes entire grid
-            barrier_wait(a->barrier);                      // ensure next is ready
-        } else {
-            if (a->tid == 0) set_borders_dead(next, a->W, a->H); // set fixed-dead borders once per step
-            barrier_wait(a->barrier);                              // ensure borders are set
-
-            step_range(grid, next, a->W, a->start_row, a->end_row); // compute assigned interior rows
-            barrier_wait(a->barrier);                                     // ensure all rows are done
-        }
-
-        // One thread performs the pointer swap (double buffering)
-        if (a->tid == 0) {
-            uint8_t *tmp = *a->grid_ptr;
-            *a->grid_ptr = *a->next_ptr;
-            *a->next_ptr = tmp;
-        }
-
-        barrier_wait(a->barrier); // ensure swap is visible before next timestep
-
-        // Optional debug printing (VERY slow; only for small grids)
-        if (a->do_print && a->tid == 0) {
-            print_grid(*a->grid_ptr, a->W, a->H);
-            printf("----------------------\n");
-        }
-        barrier_wait(a->barrier); // keep threads in lockstep when printing is enabled
+    if (interior_rows <= 0) {
+        *start_row = first;
+        *end_row = first;
+        return;
     }
-    return NULL;
+
+    const int base = interior_rows / total_threads;
+    const int rem = interior_rows % total_threads;
+    const int offset = tid * base + (tid < rem ? tid : rem);
+    const int count = base + (tid < rem ? 1 : 0);
+
+    *start_row = first + offset;
+    *end_row = *start_row + count;
+}
+
+static int sync_init(sync_state_t *sync, int worker_count)
+{
+    sync->grid = NULL;
+    sync->next = NULL;
+    sync->worker_count = worker_count;
+    sync->published_step = 0;
+    sync->completed_workers = 0;
+    sync->stop = 0;
+
+    if (pthread_mutex_init(&sync->mutex, NULL) != 0) {
+        return -1;
+    }
+    if (pthread_cond_init(&sync->step_ready_cv, NULL) != 0) {
+        pthread_mutex_destroy(&sync->mutex);
+        return -1;
+    }
+    if (pthread_cond_init(&sync->step_done_cv, NULL) != 0) {
+        pthread_cond_destroy(&sync->step_ready_cv);
+        pthread_mutex_destroy(&sync->mutex);
+        return -1;
+    }
+
+    return 0;
+}
+
+static void sync_destroy(sync_state_t *sync)
+{
+    pthread_cond_destroy(&sync->step_done_cv);
+    pthread_cond_destroy(&sync->step_ready_cv);
+    pthread_mutex_destroy(&sync->mutex);
+}
+
+/* Publish the buffers for one new generation and wake all workers. */
+static void sync_start_step(sync_state_t *sync, const uint8_t *grid, uint8_t *next)
+{
+    pthread_mutex_lock(&sync->mutex);
+    sync->grid = grid;
+    sync->next = next;
+    sync->completed_workers = 0;
+    sync->published_step++;
+    pthread_cond_broadcast(&sync->step_ready_cv);
+    pthread_mutex_unlock(&sync->mutex);
+}
+
+/* Wait until every background worker has finished the current generation. */
+static void sync_wait_step_done(sync_state_t *sync)
+{
+    pthread_mutex_lock(&sync->mutex);
+    while (sync->completed_workers < sync->worker_count) {
+        pthread_cond_wait(&sync->step_done_cv, &sync->mutex);
+    }
+    pthread_mutex_unlock(&sync->mutex);
+}
+
+static void sync_stop_workers(sync_state_t *sync)
+{
+    pthread_mutex_lock(&sync->mutex);
+    sync->stop = 1;
+    pthread_cond_broadcast(&sync->step_ready_cv);
+    pthread_mutex_unlock(&sync->mutex);
+}
+
+static void *worker_main(void *arg)
+{
+    worker_arg_t *a = (worker_arg_t *)arg;
+    sync_state_t *sync = a->sync;
+    int seen_step = 0;
+
+    pthread_mutex_lock(&sync->mutex);
+    for (;;) {
+        /* Sleep until the main thread publishes a new generation. */
+        while (!sync->stop && seen_step == sync->published_step) {
+            pthread_cond_wait(&sync->step_ready_cv, &sync->mutex);
+        }
+
+        if (sync->stop) {
+            pthread_mutex_unlock(&sync->mutex);
+            return NULL;
+        }
+
+        /* Copy the shared pointers while holding the mutex, then compute outside it. */
+        const uint8_t *grid = sync->grid;
+        uint8_t *next = sync->next;
+        const int current_step = sync->published_step;
+        pthread_mutex_unlock(&sync->mutex);
+
+        if (a->start_row < a->end_row) {
+            step_range(grid, next, a->width, a->start_row, a->end_row);
+        }
+
+        pthread_mutex_lock(&sync->mutex);
+        seen_step = current_step;
+        sync->completed_workers++;
+        if (sync->completed_workers == sync->worker_count) {
+            pthread_cond_signal(&sync->step_done_cv);
+        }
+    }
 }
 
 int main(int argc, char **argv)
 {
-    // Default parameters
-    int W = 80, H = 40; // W(idth) number of columns, H(eight) number of rows 
-    int steps = 1000;   // number of timesteps
-    int nthreads = 1;   // number of pthreads
-    double p = 0.30;    // initial alive probability     
-    unsigned seed = 1;  // RNG seed
-    int do_print = 0;   // print each timestep
-    // Parse command line options
-    for (int a = 1; a < argc; a++) {
-        if (!strcmp(argv[a], "-W") && a+1 < argc) W = atoi(argv[++a]);
-        else if (!strcmp(argv[a], "-H") && a+1 < argc) H = atoi(argv[++a]);
-        else if (!strcmp(argv[a], "-s") && a+1 < argc) steps = atoi(argv[++a]);
-        else if (!strcmp(argv[a], "-t") && a + 1 < argc) nthreads = atoi(argv[++a]);
-        else if (!strcmp(argv[a], "-p") && a+1 < argc) p = atof(argv[++a]);
-        else if (!strcmp(argv[a], "-seed") && a+1 < argc) seed = (unsigned)atoi(argv[++a]);
-        else if (!strcmp(argv[a], "-print")) do_print = 1;
-        else { usage(argv[0]); return 1; }
+    int width = 80;
+    int height = 40;
+    int steps = 1000;
+    int requested_threads = 1;
+    double alive_probability = 0.30;
+    unsigned seed = 1;
+    int do_print = 0;
+
+    for (int i = 1; i < argc; i++) {
+        if (!strcmp(argv[i], "-W") && i + 1 < argc) width = atoi(argv[++i]);
+        else if (!strcmp(argv[i], "-H") && i + 1 < argc) height = atoi(argv[++i]);
+        else if (!strcmp(argv[i], "-s") && i + 1 < argc) steps = atoi(argv[++i]);
+        else if (!strcmp(argv[i], "-t") && i + 1 < argc) requested_threads = atoi(argv[++i]);
+        else if (!strcmp(argv[i], "-p") && i + 1 < argc) alive_probability = atof(argv[++i]);
+        else if (!strcmp(argv[i], "-seed") && i + 1 < argc) seed = (unsigned)atoi(argv[++i]);
+        else if (!strcmp(argv[i], "-print")) do_print = 1;
+        else {
+            usage(argv[0]);
+            return 1;
+        }
     }
 
-    // Basic argument sanity checks
-    if (W <= 0 || H <= 0 || steps < 0 || nthreads <= 0 || p < 0.0 || p > 1.0) {
+    if (width <= 0 || height <= 0 || steps < 0 || requested_threads <= 0 ||
+        alive_probability < 0.0 || alive_probability > 1.0) {
         fprintf(stderr, "Invalid arguments.\n");
         return 1;
     }
 
-    // Allocate double buffers (curr and next)
-    uint8_t *grid = (uint8_t *)malloc((size_t)W * (size_t)H * sizeof(uint8_t));
-    uint8_t *next = (uint8_t *)malloc((size_t)W * (size_t)H * sizeof(uint8_t));
-    if (!grid || !next) {
+    uint8_t *grid = (uint8_t *)malloc((size_t)width * (size_t)height * sizeof(uint8_t));
+    uint8_t *next = (uint8_t *)malloc((size_t)width * (size_t)height * sizeof(uint8_t));
+    if (grid == NULL || next == NULL) {
         perror("malloc");
         free(grid);
         free(next);
         return 1;
     }
 
-    // Initialize grid with random alive/dead values
     srand(seed);
-    fill_zero(grid, W, H);
-    initialize_grid(p, grid, W, H);
+    initialize_grid(alive_probability, grid, width, height);
+    fill_zero(next, width, height);
 
-    // Optional initial print
     if (do_print) {
-        print_grid(grid, W, H);
+        print_grid(grid, width, height);
         printf("-----Simulation-----\n");
     }
 
-    // Serial version (no barrier needed)
-    if (nthreads == 1) {
-        double t0 = get_wall_seconds();
+    /*
+     * Only interior rows [1, height - 1) are updated.
+     * There is no point in creating more worker partitions than interior rows.
+     */
+    const int interior_rows = (height > 2) ? (height - 2) : 0;
+    int total_threads = requested_threads;
+    if (interior_rows > 0 && total_threads > interior_rows) {
+        total_threads = interior_rows;
+    }
+    if (total_threads < 1) {
+        total_threads = 1;
+    }
 
-        for (int t = 0; t < steps; t++) {
-            step(grid, next, W, H);             // compute next generation (serial)
-            uint8_t *tmp = grid; grid = next; next = tmp; // swap buffers
+    if (total_threads == 1) {
+        const double t0 = get_wall_seconds();
+
+        for (int step_id = 0; step_id < steps; step_id++) {
+            step(grid, next, width, height);
+
+            /* Double buffering avoids in-place update hazards. */
+            uint8_t *tmp = grid;
+            grid = next;
+            next = tmp;
 
             if (do_print) {
-                print_grid(grid, W, H);
+                print_grid(grid, width, height);
                 printf("----------------------\n");
             }
         }
 
-        double t1 = get_wall_seconds();
-        double elapsed = t1 - t0;
+        const double elapsed = get_wall_seconds() - t0;
+        const double updates = (double)((width > 2) ? (width - 2) : 0) *
+                               (double)((height > 2) ? (height - 2) : 0) *
+                               (double)steps;
 
-        printf("Threads: %d\n", nthreads);
-        printf("Elapsed time: %.6f seconds\n", elapsed);
-        double updates = (double)W * (double)H * (double)steps;
-        printf("Updates/sec: %.3e\n", updates / elapsed);
+        /* Stats go to stderr so stdout can be used for grid comparison. */
+        fprintf(stderr, "Threads: %d\n", total_threads);
+        fprintf(stderr, "Elapsed time: %.6f seconds\n", elapsed);
+        fprintf(stderr, "Updates/sec: %.3e\n",
+                (elapsed > 0.0) ? (updates / elapsed) : 0.0);
 
         free(grid);
         free(next);
         return 0;
     }
 
-    // Parallel version (pthreads + custom barrier)
-    pthread_t *threads = (pthread_t *)malloc((size_t)nthreads * sizeof(pthread_t));
-    thread_arg_t *args = (thread_arg_t *)malloc((size_t)nthreads * sizeof(thread_arg_t));
-    if (!threads || !args) {
+    const int worker_count = total_threads - 1;
+    pthread_t *threads = (pthread_t *)malloc((size_t)worker_count * sizeof(pthread_t));
+    worker_arg_t *args = (worker_arg_t *)malloc((size_t)worker_count * sizeof(worker_arg_t));
+    sync_state_t sync;
+    int main_start = 1;
+    int main_end = 1;
+
+    if (threads == NULL || args == NULL) {
         perror("malloc");
         free(threads);
         free(args);
@@ -156,10 +281,8 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    // Initialize reusable barrier for nthreads
-    barrier_t barrier;
-    if (barrier_init(&barrier, nthreads) != 0) {
-        fprintf(stderr, "barrier_init failed\n");
+    if (sync_init(&sync, worker_count) != 0) {
+        fprintf(stderr, "Failed to initialize thread synchronization.\n");
         free(threads);
         free(args);
         free(grid);
@@ -167,71 +290,76 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    // Shared pointers so thread 0 can swap and everyone sees it
-    uint8_t *shared_grid = grid;
-    uint8_t *shared_next = next;
+    /* The main thread also computes one block instead of staying idle. */
+    get_row_range(0, total_threads, height, &main_start, &main_end);
+    for (int tid = 1; tid < total_threads; tid++) {
+        get_row_range(tid, total_threads, height,
+                      &args[tid - 1].start_row, &args[tid - 1].end_row);
+        args[tid - 1].width = width;
+        args[tid - 1].sync = &sync;
 
-    // Split only interior rows among threads: rows [1, H-1)
-    int interior_start = 1;
-    int interior_end = (H > 1) ? (H - 1) : 1;
-    int interior_rows = interior_end - interior_start; // may be <= 0 for small H
-
-    int base = (interior_rows > 0) ? (interior_rows / nthreads) : 0;
-    int rem  = (interior_rows > 0) ? (interior_rows % nthreads) : 0;
-    printf("H=%d interior_rows=%d base=%d rem=%d\n", H, interior_rows, base, rem);
-    int r = interior_start;
-
-    // Start timing (includes thread work; excludes allocation/init)
-    double t0 = get_wall_seconds();
-
-    // Create threads
-    for (int tid = 0; tid < nthreads; tid++) {
-        int take = base + (tid < rem ? 1 : 0);       // distribute remainder rows
-        int r0 = r;
-        int r1 = r + take;
-        r = r1;
-
-        args[tid].tid = tid;
-        args[tid].start_row = r0;
-        args[tid].end_row = r1;
-        args[tid].W = W;
-        args[tid].H = H;
-        args[tid].steps = steps;
-        args[tid].do_print = do_print;
-
-        args[tid].grid_ptr = &shared_grid;
-        args[tid].next_ptr = &shared_next;
-        args[tid].barrier = &barrier;
-        printf("tid %d rows [%d, %d)\n", tid, args[tid].start_row, args[tid].end_row);
-
-        if (pthread_create(&threads[tid], NULL, worker, &args[tid]) != 0) {
-            fprintf(stderr, "pthread_create failed for tid=%d\n", tid);
-            // If a thread fails to start, others may deadlock; best exit early in student project
+        if (pthread_create(&threads[tid - 1], NULL, worker_main, &args[tid - 1]) != 0) {
+            fprintf(stderr, "pthread_create failed for worker %d\n", tid);
+            sync_stop_workers(&sync);
+            for (int j = 1; j < tid; j++) {
+                pthread_join(threads[j - 1], NULL);
+            }
+            sync_destroy(&sync);
+            free(threads);
+            free(args);
+            free(grid);
+            free(next);
             return 1;
         }
     }
 
-    // Join threads
-    for (int tid = 0; tid < nthreads; tid++) {
-        pthread_join(threads[tid], NULL);
+    const double t0 = get_wall_seconds();
+
+    for (int step_id = 0; step_id < steps; step_id++) {
+        if (width <= 2 || height <= 2) {
+            fill_zero(next, width, height);
+        } else {
+            /* Small global tasks stay on the main thread. */
+            set_borders_dead(next, width, height);
+            sync_start_step(&sync, grid, next);
+
+            if (main_start < main_end) {
+                step_range(grid, next, width, main_start, main_end);
+            }
+
+            sync_wait_step_done(&sync);
+        }
+
+        uint8_t *tmp = grid;
+        grid = next;
+        next = tmp;
+
+        if (do_print) {
+            print_grid(grid, width, height);
+            printf("----------------------\n");
+        }
     }
 
-    double t1 = get_wall_seconds();
-    double elapsed = t1 - t0;
-    // Clean up barrier resources
-    barrier_destroy(&barrier);
+    sync_stop_workers(&sync);
+    for (int i = 0; i < worker_count; i++) {
+        pthread_join(threads[i], NULL);
+    }
+    sync_destroy(&sync);
 
-    // Report timing
-    printf("Threads: %d\n", nthreads);
-    printf("Elapsed time: %.6f seconds\n", elapsed);
-    double updates = (double)(W - 2) * (double)(H - 2) * (double)steps;
-    printf("Updates/sec: %.3e\n", updates / elapsed);
+    const double elapsed = get_wall_seconds() - t0;
+    const double updates = (double)((width > 2) ? (width - 2) : 0) *
+                           (double)((height > 2) ? (height - 2) : 0) *
+                           (double)steps;
 
-    // Free memory
+    fprintf(stderr, "Threads: %d\n", total_threads);
+    fprintf(stderr, "Elapsed time: %.6f seconds\n", elapsed);
+    fprintf(stderr, "Updates/sec: %.3e\n",
+            (elapsed > 0.0) ? (updates / elapsed) : 0.0);
+
     free(threads);
     free(args);
-    free(shared_grid);
-    free(shared_next);
+    free(grid);
+    free(next);
 
     return 0;
 }

@@ -1,0 +1,25 @@
+W=2000 H=2000 S=200 t=1 2 4 8 run=1
+Threads: 1
+Elapsed time: 0.195734 seconds
+Updates/sec: 4.079e+09
+
+W=2000 H=2000 S=200 t=1 2 4 8 run=2
+Threads: 1
+Elapsed time: 0.199805 seconds
+Updates/sec: 3.996e+09
+
+W=2000 H=2000 S=200 t=1 2 4 8 run=3
+Threads: 1
+Elapsed time: 0.194176 seconds
+Updates/sec: 4.112e+09
+
+W=2000 H=2000 S=200 t=1 2 4 8 run=4
+Threads: 1
+Elapsed time: 0.207322 seconds
+Updates/sec: 3.851e+09
+
+W=2000 H=2000 S=200 t=1 2 4 8 run=5
+Threads: 1
+Elapsed time: 0.206878 seconds
+Updates/sec: 3.859e+09
+

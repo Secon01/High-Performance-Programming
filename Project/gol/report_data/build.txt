@@ -1,0 +1,4 @@
+rm -f main.o gol.o gol
+gcc -std=c11 -O3 -Wall -Wextra -pthread   -c -o main.o main.c
+gcc -std=c11 -O3 -Wall -Wextra -pthread   -c -o gol.o gol.c
+gcc -std=c11 -O3 -Wall -Wextra -pthread main.o gol.o -o gol

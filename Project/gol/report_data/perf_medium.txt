@@ -1,0 +1,25 @@
+W=1000 H=1000 S=100 t=1 2 4 8 run=1
+Threads: 1
+Elapsed time: 0.032285 seconds
+Updates/sec: 3.085e+09
+
+W=1000 H=1000 S=100 t=1 2 4 8 run=2
+Threads: 1
+Elapsed time: 0.025689 seconds
+Updates/sec: 3.877e+09
+
+W=1000 H=1000 S=100 t=1 2 4 8 run=3
+Threads: 1
+Elapsed time: 0.023460 seconds
+Updates/sec: 4.246e+09
+
+W=1000 H=1000 S=100 t=1 2 4 8 run=4
+Threads: 1
+Elapsed time: 0.021675 seconds
+Updates/sec: 4.595e+09
+
+W=1000 H=1000 S=100 t=1 2 4 8 run=5
+Threads: 1
+Elapsed time: 0.021116 seconds
+Updates/sec: 4.717e+09
+

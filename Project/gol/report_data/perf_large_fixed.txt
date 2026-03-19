@@ -1,0 +1,150 @@
+CASE=large W=2000 H=2000 S=200 THREADS=1 RUN=1
+Threads: 1
+Elapsed time: 0.202695 seconds
+Updates/sec: 3.939e+09
+
+CASE=large W=2000 H=2000 S=200 THREADS=1 RUN=2
+Threads: 1
+Elapsed time: 0.205551 seconds
+Updates/sec: 3.884e+09
+
+CASE=large W=2000 H=2000 S=200 THREADS=1 RUN=3
+Threads: 1
+Elapsed time: 0.202882 seconds
+Updates/sec: 3.935e+09
+
+CASE=large W=2000 H=2000 S=200 THREADS=1 RUN=4
+Threads: 1
+Elapsed time: 0.205501 seconds
+Updates/sec: 3.885e+09
+
+CASE=large W=2000 H=2000 S=200 THREADS=1 RUN=5
+Threads: 1
+Elapsed time: 0.177989 seconds
+Updates/sec: 4.486e+09
+
+CASE=large W=2000 H=2000 S=200 THREADS=2 RUN=1
+Threads: 2
+Elapsed time: 0.092071 seconds
+Updates/sec: 8.672e+09
+
+CASE=large W=2000 H=2000 S=200 THREADS=2 RUN=2
+Threads: 2
+Elapsed time: 0.088981 seconds
+Updates/sec: 8.973e+09
+
+CASE=large W=2000 H=2000 S=200 THREADS=2 RUN=3
+Threads: 2
+Elapsed time: 0.089387 seconds
+Updates/sec: 8.932e+09
+
+CASE=large W=2000 H=2000 S=200 THREADS=2 RUN=4
+Threads: 2
+Elapsed time: 0.105199 seconds
+Updates/sec: 7.589e+09
+
+CASE=large W=2000 H=2000 S=200 THREADS=2 RUN=5
+Threads: 2
+Elapsed time: 0.109588 seconds
+Updates/sec: 7.285e+09
+
+CASE=large W=2000 H=2000 S=200 THREADS=4 RUN=1
+Threads: 4
+Elapsed time: 0.053845 seconds
+Updates/sec: 1.483e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=4 RUN=2
+Threads: 4
+Elapsed time: 0.058337 seconds
+Updates/sec: 1.369e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=4 RUN=3
+Threads: 4
+Elapsed time: 0.059003 seconds
+Updates/sec: 1.353e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=4 RUN=4
+Threads: 4
+Elapsed time: 0.061085 seconds
+Updates/sec: 1.307e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=4 RUN=5
+Threads: 4
+Elapsed time: 0.060187 seconds
+Updates/sec: 1.327e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=8 RUN=1
+Threads: 8
+Elapsed time: 0.034985 seconds
+Updates/sec: 2.282e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=8 RUN=2
+Threads: 8
+Elapsed time: 0.035095 seconds
+Updates/sec: 2.275e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=8 RUN=3
+Threads: 8
+Elapsed time: 0.035447 seconds
+Updates/sec: 2.252e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=8 RUN=4
+Threads: 8
+Elapsed time: 0.035177 seconds
+Updates/sec: 2.270e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=8 RUN=5
+Threads: 8
+Elapsed time: 0.035376 seconds
+Updates/sec: 2.257e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=12 RUN=1
+Threads: 12
+Elapsed time: 0.038834 seconds
+Updates/sec: 2.056e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=12 RUN=2
+Threads: 12
+Elapsed time: 0.038548 seconds
+Updates/sec: 2.071e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=12 RUN=3
+Threads: 12
+Elapsed time: 0.038908 seconds
+Updates/sec: 2.052e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=12 RUN=4
+Threads: 12
+Elapsed time: 0.040299 seconds
+Updates/sec: 1.981e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=12 RUN=5
+Threads: 12
+Elapsed time: 0.037691 seconds
+Updates/sec: 2.118e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=14 RUN=1
+Threads: 14
+Elapsed time: 0.035458 seconds
+Updates/sec: 2.252e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=14 RUN=2
+Threads: 14
+Elapsed time: 0.035532 seconds
+Updates/sec: 2.247e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=14 RUN=3
+Threads: 14
+Elapsed time: 0.035826 seconds
+Updates/sec: 2.229e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=14 RUN=4
+Threads: 14
+Elapsed time: 0.035455 seconds
+Updates/sec: 2.252e+10
+
+CASE=large W=2000 H=2000 S=200 THREADS=14 RUN=5
+Threads: 14
+Elapsed time: 0.035771 seconds
+Updates/sec: 2.232e+10
+
